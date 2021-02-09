@@ -9,6 +9,10 @@
   max-width: 1300px;
 }
 
+header {
+  text-align: center;
+}
+
 .movie-container {
   display: flex;
   width: 100%;

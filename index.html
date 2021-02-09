@@ -10,8 +10,9 @@
   <body>
     <div id="app" class="container">
       <header>
-        <input type="text" v-model="query">
+        <input type="text" placeholder="cerca un film" v-model="query">
         <button type="button" name="button" @click="cercaFilm">Cerca</button>
+        <div class="">{{resultFor}}</div>
       </header>
       <main class="movie-container">
         <div v-for="movie in listaFilm" class="movie">

@@ -3,6 +3,7 @@ new Vue({
 
   data: {
     query:'',
+    resultFor: '',
     listaFilm: []
   },
 
@@ -14,6 +15,8 @@ new Vue({
       .then(function(xhr) {
         let dataObject = xhr.data;
         self.listaFilm = dataObject.results;
+        self.resultFor = `risultati per: ${self.query}`
+        self.query = "";
       })
     }
   }
