@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin: 20px auto;
+  max-width: 1300px;
+}
+
+.movie-container {
+  display: flex;
+  width: 100%;
+  min-height: 500px;
+  justify-content:space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.movie-container .movie {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  justify-content: space-between;
+  width: 200px;
+  padding: 10px;
+  border: solid 2px #000;
+}
