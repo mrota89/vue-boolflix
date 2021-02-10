@@ -13,7 +13,7 @@ header {
   text-align: center;
 }
 
-.movie-container {
+.movie-container, .series-container {
   display: flex;
   width: 100%;
   min-height: 500px;
@@ -23,21 +23,21 @@ header {
   padding: 10px;
 }
 
-.movie-container .movie {
+.movie, .serie {
   display: flex;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 300px;
   justify-content: space-between;
   width: 200px;
   padding: 10px;
   border: solid 2px #000;
 }
 
-.movie-container .movie .box-image {
+.box-image {
   width: 40px;
   margin-top: 5px;
 }
 
-.movie-container .movie img {
-width: 100%;
+.box-image img {
+  width: 100%;
 }
