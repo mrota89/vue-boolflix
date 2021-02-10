@@ -19,7 +19,6 @@ new Vue({
         self.voteFive();
         self.resultFor = `risultati per: ${self.query}`
         self.query = "";
-        console.log()
       })
     },
     voteFive: function() {
@@ -34,6 +33,11 @@ new Vue({
         element.number_ws = whiteStars
       });
     },
+    flagLang: function(index) {
+      const flagImage = this.listaFilm[index].original_language;
+      const imageString = `flag-svg/${flagImage}.svg`;
+      return imageString;
+    }
   }
 })
 

@@ -32,3 +32,12 @@ header {
   padding: 10px;
   border: solid 2px #000;
 }
+
+.movie-container .movie .box-image {
+  width: 40px;
+  margin-top: 5px;
+}
+
+.movie-container .movie img {
+width: 100%;
+}
