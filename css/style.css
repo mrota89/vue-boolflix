@@ -10,7 +10,10 @@ img {
 
 .container {
   margin: 20px auto;
-  max-width: 1300px;
+  max-width: 1400px;
+  min-width: 900px;
+  width: 100%;
+  height: calc(100vh - 40px);
 }
 
 header {
@@ -20,7 +23,6 @@ header {
 .movie-container, .series-container {
   display: flex;
   width: 100%;
-  min-height: 500px;
   justify-content:space-around;
   align-items: center;
   flex-wrap: wrap;
@@ -43,6 +45,6 @@ header {
 }
 
 .yellow-star {
-  color: yellow;
+  color: #ffff00;
   font-size: 25px;
 }

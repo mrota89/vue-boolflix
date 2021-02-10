@@ -59,9 +59,9 @@ new Vue({
       lista.forEach((element) => {
         const {vote_average} = element
         round = Math.round(element.vote_average / 2);
-        element.vote_average = round;
+        element.number_yellowstar = round;
         whiteStars = this.maxVote - round;
-        element.number_ws = whiteStars;
+        element.number_whitestar = whiteStars;
       });
     },
 

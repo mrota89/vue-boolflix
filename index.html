@@ -44,8 +44,8 @@
             <div class="vote">
               <strong>Voto:</strong><br>
               <div class="star-vote">
-                <i class="fas fa-star yellow-star" v-for="yellowStar in movie.vote_average"></i>
-                <i class="far fa-star" v-for="whiteStar in movie.number_ws"></i>
+                <i class="fas fa-star yellow-star" v-for="yellowStar in movie.number_yellowstar"></i>
+                <i class="far fa-star" v-for="whiteStar in movie.number_whitestar"></i>
               </div>
             </div>
 
@@ -81,8 +81,8 @@
             <div class="vote">
               <strong>Voto:</strong><br>
               <div class="star-vote">
-                <i class="fas fa-star yellow-star" v-for="yellowStar in serie.vote_average"></i>
-                <i class="far fa-star" v-for="whiteStar in serie.number_ws"></i>
+                <i class="fas fa-star yellow-star" v-for="yellowStar in serie.number_yellowstar"></i>
+                <i class="far fa-star" v-for="whiteStar in serie.number_whitestar"></i>
               </div>
             </div>
 
