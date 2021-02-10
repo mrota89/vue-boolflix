@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+img {
+  width: 100%;
+}
+
 .container {
   margin: 20px auto;
   max-width: 1300px;
@@ -33,11 +37,12 @@ header {
   border: solid 2px #000;
 }
 
-.box-image {
+.box-image, .copertina {
   width: 40px;
   margin-top: 5px;
 }
 
-.box-image img {
-  width: 100%;
+.yellow-star {
+  color: yellow;
+  font-size: 25px;
 }

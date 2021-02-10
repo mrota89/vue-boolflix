@@ -6,7 +6,8 @@ new Vue({
     resultFor: '',
     listaFilm: [],
     listaSerie: [],
-    maxVote: 5
+    maxVote: 5,
+    lengFlagAv: ['ar', 'cn', 'de', 'en','es', 'fr', 'it', 'ja', 'pt' ]
   },
 
   methods: {
@@ -46,7 +47,7 @@ new Vue({
         let dataObject = xhr.data;
         self.listaSerie = dataObject.results;
         self.voteFive(self.listaSerie);
-        self.resultFor = `risultati per: ${self.query}`;
+        self.queryResult();
         self.query = "";
       });
     },
@@ -59,8 +60,8 @@ new Vue({
         const {vote_average} = element
         round = Math.round(element.vote_average / 2);
         element.vote_average = round;
-        whiteStars = this.maxVote - round
-        element.number_ws = whiteStars
+        whiteStars = this.maxVote - round;
+        element.number_ws = whiteStars;
       });
     },
 
@@ -68,6 +69,28 @@ new Vue({
       const flagImage = lista[index].original_language;
       const imageString = `flag-svg/${flagImage}.svg`;
       return imageString;
+    },
+
+    flagVisibility: function(index, lista) {
+      const language = lista[index].original_language;
+      if(this.lengFlagAv.includes(language)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    imagePoster: function(index, lista) {
+      const poster = lista[index].poster_path;
+      return `https://image.tmdb.org/t/p/w342${poster}`;
+    },
+
+    queryResult: function() {
+      if(this.listaFilm.length > 0 && this.listaSerie.length > 0) {
+        return this.resultFor = `risultati per: ${this.query}`;
+      } else {
+        return this.resultFor = `Nessun risultato per: ${this.query}`;
+      }
     }
   }
 })

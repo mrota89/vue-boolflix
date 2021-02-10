@@ -19,50 +19,73 @@
         <div class="movie-container">
 
           <div v-for="(movie, index) in listaFilm" class="movie">
+            <div class="copertina">
+              <img :src="imagePoster(index, listaFilm)" alt="">
+            </div>
+
             <div class="title">
               <strong>Titolo:</strong><br>{{movie.title}}
             </div>
+
             <div class="original-title">
               <strong>Titolo originale:</strong><br>{{movie.original_title}}
             </div>
+
             <div class="language">
               <strong>Lingua:</strong>
-              <div class="box-image">
-                <img :src="flagLang(index,listaFilm)" alt="">
+              <div class="string-box" v-if="!flagVisibility(index, listaFilm)">
+                {{movie.original_language}}
+              </div>
+              <div class="box-image" v-if="flagVisibility(index, listaFilm)">
+                <img :src="flagLang(index, listaFilm)" alt="">
               </div>
             </div>
+
             <div class="vote">
               <strong>Voto:</strong><br>
               <div class="star-vote">
-                <i class="fas fa-star" v-for="blackStar in movie.vote_average"></i>
+                <i class="fas fa-star yellow-star" v-for="yellowStar in movie.vote_average"></i>
                 <i class="far fa-star" v-for="whiteStar in movie.number_ws"></i>
               </div>
             </div>
+
           </div>
         </div>
 
         <div class="series-container">
 
           <div v-for="(serie, index) in listaSerie" class="serie">
+
+            <div class="copertina">
+              <img :src="imagePoster(index, listaSerie)" alt="">
+            </div>
+
             <div class="title">
               <strong>Titolo:</strong><br>{{serie.name}}
             </div>
+
             <div class="original-title">
               <strong>Titolo originale:</strong><br>{{serie.original_name}}
             </div>
+
             <div class="language">
               <strong>Lingua:</strong>
-              <div class="box-image">
-                <img :src="flagLang(index,listaSerie)" alt="">
+              <div class="string-box" v-if="!flagVisibility(index, listaSerie)">
+                {{serie.original_language}}
+              </div>
+              <div class="box-image" v-if="flagVisibility(index, listaSerie)">
+                <img :src="flagLang(index, listaSerie)" alt="">
               </div>
             </div>
+
             <div class="vote">
               <strong>Voto:</strong><br>
               <div class="star-vote">
-                <i class="fas fa-star" v-for="blackStar in serie.vote_average"></i>
+                <i class="fas fa-star yellow-star" v-for="yellowStar in serie.vote_average"></i>
                 <i class="far fa-star" v-for="whiteStar in serie.number_ws"></i>
               </div>
             </div>
+
           </div>
         </div>
 
