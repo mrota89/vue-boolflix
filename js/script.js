@@ -4,7 +4,8 @@ new Vue({
   data: {
     query:'',
     resultFor: '',
-    listaFilm: []
+    listaFilm: [],
+    maxVote: 5
   },
 
   methods: {
@@ -15,10 +16,24 @@ new Vue({
       .then(function(xhr) {
         let dataObject = xhr.data;
         self.listaFilm = dataObject.results;
+        self.voteFive();
         self.resultFor = `risultati per: ${self.query}`
         self.query = "";
+        console.log()
       })
-    }
+    },
+    voteFive: function() {
+      let round;
+      let whiteStar;
+      let number_ws;
+      this.listaFilm.forEach((element) => {
+        const {vote_average} = element
+        round = Math.round(element.vote_average / 2);
+        element.vote_average = round;
+        whiteStars = this.maxVote - round
+        element.number_ws = whiteStars
+      });
+    },
   }
 })
 
