@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
+  color: #fff;
 }
 
 body {
@@ -15,9 +16,9 @@ img {
 
 .container {
   margin: 20px auto;
-  max-width: 1300px;
-  min-width: 1000px;
-  background: linear-gradient(0deg, rgba(227,8,19,1) 10%, rgba(0,0,0,1) 30%);
+  width: 100%;
+  min-width: 950px;
+  background: linear-gradient(0deg, rgba(227,8,19,1) 30%, rgba(0,0,0,1) 50%);
   box-shadow: 2px 9px 26px 7px rgba(227,8,19,0.85);
 }
 
@@ -26,12 +27,16 @@ header {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 200px;
+  height: 150px;
   flex-wrap: wrap;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  background: #000;
 }
 
 header .logo-bool {
-  width: 200px;
+  width: 300px;
 }
 
 header .search {
@@ -46,6 +51,7 @@ header input {
   font-size: 30px;
   padding: 10px;
   outline: none;
+  color: #000;
 }
 
 ::placeholder {
@@ -60,7 +66,6 @@ header .btn-search {
   background: #e30813;
   font-size: 30px;
   border: solid #f000 1px;
-  color: #fff;
   cursor: pointer;
 }
 
@@ -69,8 +74,7 @@ header .btn-search {
   vertical-align: middle;
 }
 
-header .alert-risultati {
-  color: #fff;
+header .alert-risultati {;
   width: 100%;
   font-size: 30px;
   text-align: center;
@@ -78,13 +82,17 @@ header .alert-risultati {
 
 main {
   height: calc(100% - 200px);
+  margin: 180px auto 0 auto;
+  width: 80%;
 }
 
 main h2 {
   width: 100%;
+  height: 100px;
+  line-height: 100px;
   text-align: center;
-  color: #fff;
   margin-top: 30px;
+  border-top: solid #000 3px;
 }
 
 main .movie-container, .series-container {
@@ -93,7 +101,6 @@ main .movie-container, .series-container {
   justify-content: center;
   align-items: flex-start;
   padding: 10px;
-  color: #fff;
 }
 
 main .card {

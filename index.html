@@ -16,7 +16,7 @@
           <img src="image/logo-bool.png" alt="">
         </div>
         <div class="search">
-          <input type="text" placeholder="cerca qualcosa..." v-model="query">
+          <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
           <div class="btn-search" @click="searchAll">
             Cerca <i class="fas fa-angle-right"></i>
           </div>
@@ -56,8 +56,8 @@
               <div class="vote">
                 <strong>Voto:</strong><br>
                 <div class="star-vote">
-                  <i class="fas fa-star yellow-star" v-for="yellowStar in movie.number_yellowstar"></i>
-                  <i class="far fa-star" v-for="whiteStar in movie.number_whitestar"></i>
+                  <i class="fas fa-star yellow-star" v-for="yellowStar in movie.yellowStar"></i>
+                  <i class="far fa-star" v-for="whiteStar in movie.whiteStar"></i>
                 </div>
               </div>
 
@@ -107,8 +107,8 @@
               <div class="vote">
                 <strong>Voto:</strong><br>
                 <div class="star-vote">
-                  <i class="fas fa-star yellow-star" v-for="yellowStar in serie.number_yellowstar"></i>
-                  <i class="far fa-star" v-for="whiteStar in serie.number_whitestar"></i>
+                  <i class="fas fa-star yellow-star" v-for="yellowStar in serie.yellowStar"></i>
+                  <i class="far fa-star" v-for="whiteStar in serie.whiteStar"></i>
                 </div>
               </div>
 
