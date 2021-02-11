@@ -2,6 +2,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: #000;
 }
 
 img {
@@ -11,13 +16,59 @@ img {
 .container {
   margin: 20px auto;
   max-width: 1400px;
-  min-width: 900px;
+  min-width: 1000px;
   width: 100%;
   height: calc(100vh - 40px);
 }
 
 header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+header .logo-bool {
+  width: 200px;
+}
+
+header .search {
+  width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+header input {
+  height: 50px;
+  width: 500px;
+  font-size: 30px;
+  padding: 10px;
+  outline: none;
+}
+
+::placeholder {
+  color: #ccc;
+}
+
+header .btn-search {
+  height: 55px;
+  line-height: 60px;
   text-align: center;
+  width: 150px;
+  background: #e30813;
+  font-size: 40px;
+  border: solid #f000 1px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-search i {
+  font-size: 40px;
+  vertical-align: middle;
+}
+
+main {
+  background: linear-gradient(0deg, rgba(36,13,0,1) 60%, rgba(204,204,204,1) 93%, rgba(227,8,19,1) 100%);
 }
 
 .movie-container, .series-container {
@@ -27,6 +78,7 @@ header {
   align-items: center;
   flex-wrap: wrap;
   padding: 10px;
+  color: #fff;
 }
 
 .movie, .serie {
@@ -44,7 +96,11 @@ header {
   margin-top: 5px;
 }
 
+.star-vote {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .yellow-star {
   color: #ffff00;
-  font-size: 25px;
 }

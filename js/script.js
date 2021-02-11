@@ -82,12 +82,18 @@ new Vue({
 
     imagePoster: function(index, lista) {
       const poster = lista[index].poster_path;
-      return `https://image.tmdb.org/t/p/w342${poster}`;
+      let imageRender;
+      if(poster == null) {
+        imageRender = 'flag-svg/imagena.png'
+      } else {
+        imageRender = `https://image.tmdb.org/t/p/w342${poster}`;
+      }
+      return imageRender;
     },
 
     queryResult: function() {
       if(this.listaFilm.length > 0 && this.listaSerie.length > 0) {
-        return this.resultFor = `risultati per: ${this.query}`;
+        return this.resultFor = `Risultati per: ${this.query}`;
       } else {
         return this.resultFor = `Nessun risultato per: ${this.query}`;
       }

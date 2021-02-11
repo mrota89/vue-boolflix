@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/style.css">
     <title>BoolFlix</title>
@@ -11,10 +12,18 @@
   <body>
     <div id="app" class="container">
       <header>
-        <input type="text" placeholder="cerca un film" v-model="query">
-        <button type="button" name="button" @click="searchAll">Cerca</button>
-        <div class="">{{resultFor}}</div>
+        <div class="logo-bool">
+          <img src="flag-svg/logo-bool.png" alt="">
+        </div>
+        <div class="search">
+          <input type="text" placeholder="cerca qualcosa..." v-model="query">
+          <div class="btn-search" @click="searchAll">
+            Cerca <i class="fas fa-angle-right"></i>
+          </div>
+          <div class="">{{resultFor}}</div>
+        </div>
       </header>
+
       <main>
         <div class="movie-container">
 
