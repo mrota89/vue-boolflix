@@ -15,7 +15,7 @@ img {
 
 .container {
   margin: 20px auto;
-  max-width: 1400px;
+  max-width: 1300px;
   min-width: 1000px;
   background: linear-gradient(0deg, rgba(227,8,19,1) 10%, rgba(0,0,0,1) 30%);
   box-shadow: 2px 9px 26px 7px rgba(227,8,19,0.85);
@@ -27,6 +27,7 @@ header {
   align-items: center;
   width: 100%;
   height: 200px;
+  flex-wrap: wrap;
 }
 
 header .logo-bool {
@@ -68,12 +69,15 @@ header .btn-search {
   vertical-align: middle;
 }
 
-main {
-  height: calc(100% - 200px);
+header .alert-risultati {
+  color: #fff;
+  width: 100%;
+  font-size: 30px;
+  text-align: center;
 }
 
-main .alert-risultati {
-  color: white;
+main {
+  height: calc(100% - 200px);
 }
 
 main h2 {
@@ -86,17 +90,20 @@ main h2 {
 main .movie-container, .series-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   padding: 10px;
   color: #fff;
 }
 
-main .movie, .serie {
-  padding: 10px;
-  border: solid 4px #fff;
-  margin-top: 10px;
+main .card {
   position: relative;
+  padding: 5px;
+  border: solid 2px #fff;
+}
+
+.title, .original-title,  .language, .vote, .overview {
+  margin-top: 10px;
 }
 
 main .copertina {
@@ -106,8 +113,6 @@ main .copertina {
 }
 
 main .info {
-  flex-direction: column;
-  justify-content: space-around;
   padding: 10px;
   background: #000;
   position: absolute;
@@ -116,7 +121,12 @@ main .info {
   left: 50%;
   width: 342px;
   height: 550px;
+  overflow-y: auto;
   display: none;
+}
+
+main .card:hover .info {
+  display: block;
 }
 
 main .info .box-image {

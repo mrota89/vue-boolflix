@@ -30,6 +30,7 @@ new Vue({
         let dataObject = xhr.data;
         self.listaFilm = dataObject.results;
         self.voteFive(self.listaFilm);
+        self.queryResult();
       });
     },
 
@@ -80,6 +81,16 @@ new Vue({
       }
     },
 
+    overview: function(index, lista) {
+      const sinossi = lista[index].overview;
+      let newSinossi;
+      if(sinossi !== "") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
     imagePoster: function(index, lista) {
       const poster = lista[index].poster_path;
       let imageRender;
@@ -92,7 +103,7 @@ new Vue({
     },
 
     queryResult: function() {
-      if(this.listaFilm.length > 0 && this.listaSerie.length > 0) {
+      if(this.listaFilm.length > 0 || this.listaSerie.length > 0) {
         return this.resultFor = `Risultati per: ${this.query}`;
       } else {
         return this.resultFor = `Nessun risultato per: ${this.query}`;

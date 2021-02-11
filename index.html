@@ -21,16 +21,15 @@
             Cerca <i class="fas fa-angle-right"></i>
           </div>
         </div>
+        <div class="alert-risultati">{{resultFor}}</div>
       </header>
 
       <main>
-        <div class="alert-risultati">{{resultFor}}</div>
-
         <!-- container film -->
         <h2 v-if="listaFilm.length > 0">Film</h2>
         <div class="movie-container">
           <!-- singola card film -->
-          <div v-for="(movie, index) in listaFilm" class="movie">
+          <div v-for="(movie, index) in listaFilm" class="card movie">
             <div class="copertina">
               <img :src="imagePoster(index, listaFilm)" alt="">
             </div>
@@ -45,7 +44,7 @@
               </div>
 
               <div class="language">
-                <strong>Lingua:</strong>
+                <strong>Lingua originale:</strong>
                 <div class="string-box" v-if="!flagVisibility(index, listaFilm)">
                   {{movie.original_language}}
                 </div>
@@ -63,8 +62,13 @@
               </div>
 
               <div class="overview">
-                <strong>Overview</strong>
-                {{movie.overview}}
+                <strong>Overview</strong> <br>
+                <div v-if="!overview(index, listaFilm)" class="not-avaible-overview">
+                  Non disponibile
+                </div>
+                <div v-if="overview(index, listaFilm)" class="avaible-overview">
+                  {{movie.overview}}
+                </div>
               </div>
             </div>
           </div>
@@ -76,7 +80,7 @@
         <h2 v-if="listaSerie.length > 0">Serie TV</h2>
         <div class="series-container">
           <!-- singola card serie tv-->
-          <div v-for="(serie, index) in listaSerie" class="serie">
+          <div v-for="(serie, index) in listaSerie" class="card vserie">
             <div class="copertina">
               <img :src="imagePoster(index, listaSerie)" alt="">
             </div>
@@ -91,7 +95,7 @@
               </div>
 
               <div class="language">
-                <strong>Lingua:</strong>
+                <strong>Lingua originale:</strong>
                 <div class="string-box" v-if="!flagVisibility(index, listaSerie)">
                   {{serie.original_language}}
                 </div>
@@ -109,8 +113,13 @@
               </div>
 
               <div class="overview">
-                <strong>Overview</strong><br>
-                {{serie.overview}}
+                <strong>Overview</strong> <br>
+                <div v-if="!overview(index, listaSerie)" class="not-avaible-overview">
+                  Non disponibile
+                </div>
+                <div v-if="overview(index, listaSerie)" class="avaible-overview">
+                  {{serie.overview}}
+                </div>
               </div>
             </div>
 
