@@ -67,7 +67,7 @@ new Vue({
 
     flagLang: function(index, lista) {
       const flagImage = lista[index].original_language;
-      const imageString = `flag-svg/${flagImage}.svg`;
+      const imageString = `image/${flagImage}.svg`;
       return imageString;
     },
 
@@ -84,7 +84,7 @@ new Vue({
       const poster = lista[index].poster_path;
       let imageRender;
       if(poster == null) {
-        imageRender = 'flag-svg/imagena.png'
+        imageRender = 'image/image-na.png'
       } else {
         imageRender = `https://image.tmdb.org/t/p/w342${poster}`;
       }

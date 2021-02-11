@@ -17,8 +17,8 @@ img {
   margin: 20px auto;
   max-width: 1400px;
   min-width: 1000px;
-  width: 100%;
-  height: calc(100vh - 40px);
+  background: linear-gradient(0deg, rgba(227,8,19,1) 10%, rgba(0,0,0,1) 30%);
+  box-shadow: 2px 9px 26px 7px rgba(227,8,19,0.85);
 }
 
 header {
@@ -26,6 +26,7 @@ header {
   justify-content: space-around;
   align-items: center;
   width: 100%;
+  height: 200px;
 }
 
 header .logo-bool {
@@ -56,42 +57,69 @@ header .btn-search {
   text-align: center;
   width: 150px;
   background: #e30813;
-  font-size: 40px;
+  font-size: 30px;
   border: solid #f000 1px;
   color: #fff;
   cursor: pointer;
 }
 
 .btn-search i {
-  font-size: 40px;
+  font-size: 30px;
   vertical-align: middle;
 }
 
 main {
-  background: linear-gradient(0deg, rgba(36,13,0,1) 60%, rgba(204,204,204,1) 93%, rgba(227,8,19,1) 100%);
+  height: calc(100% - 200px);
 }
 
-.movie-container, .series-container {
-  display: flex;
+main .alert-risultati {
+  color: white;
+}
+
+main h2 {
   width: 100%;
-  justify-content:space-around;
-  align-items: center;
+  text-align: center;
+  color: #fff;
+  margin-top: 30px;
+}
+
+main .movie-container, .series-container {
+  display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 10px;
   color: #fff;
 }
 
-.movie, .serie {
-  display: flex;
-  flex-direction: column;
-  min-height: 300px;
-  justify-content: space-between;
-  width: 200px;
+main .movie, .serie {
   padding: 10px;
-  border: solid 2px #000;
+  border: solid 4px #fff;
+  margin-top: 10px;
+  position: relative;
 }
 
-.box-image, .copertina {
+main .copertina {
+  width: 342px;
+  height: 550px;
+  display: flex;
+}
+
+main .info {
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 10px;
+  background: #000;
+  position: absolute;
+  transform: translate(-50% , -50%);
+  top: 50%;
+  left: 50%;
+  width: 342px;
+  height: 550px;
+  display: none;
+}
+
+main .info .box-image {
   width: 40px;
   margin-top: 5px;
 }
