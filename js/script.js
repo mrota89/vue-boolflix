@@ -10,7 +10,7 @@ new Vue({
     scelte: ['Film', 'Serie TV'],
     scelteId: 0,
     maxVote: 5,
-    lengFlagAv: ['cn', 'de', 'en','es', 'fr', 'it', 'pt' ]
+    lengFlagAv: ['ja', 'de', 'en', 'es', 'fr', 'it', 'pt']
   },
 
   methods: {
@@ -18,9 +18,8 @@ new Vue({
       this.searchMovie();
       this.searchSeries();
       setTimeout(() => {
-        console.log(this.listaSerie)
         this.query = "";
-      }, 1000)
+      }, 5000)
     },
 
     searchMovie: function() {
@@ -29,7 +28,7 @@ new Vue({
         let dataObject = xhr.data;
         this.listaFilm = dataObject.results;
         this.voteFive(this.listaFilm);
-        this.listaDaMostrare = this.listaFilm;
+        this.changeTab(this.scelteId);
         this.queryResult();
       });
     },
@@ -40,6 +39,7 @@ new Vue({
         let dataObject = xhr.data;
         this.listaSerie = dataObject.results;
         this.voteFive(this.listaSerie);
+        this.changeTab(this.scelteId);
         this.queryResult();
       });
     },

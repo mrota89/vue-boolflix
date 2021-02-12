@@ -17,7 +17,9 @@
             <img src="image/logo-bool.png" alt="">
           </div>
           <div class="menu-scelta">
-            <div v-for="(element, index) in scelte" @click="changeTab(index)" :class="selectedTab(index)">{{element}}</div>
+            <div v-for="(element, index) in scelte" @click="changeTab(index)" :class="selectedTab(index)">
+              {{element}}
+            </div>
           </div>
           <div class="search">
             <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
@@ -63,7 +65,7 @@
                   {{element.original_language}}
                 </div>
                 <div class="box-image" v-if="flagVisibility(index, listaDaMostrare)">
-                  <img :src="flagLang(index, listaFilm)" alt="">
+                  <img :src="flagLang(index, listaDaMostrare)" alt="">
                 </div>
               </div>
 

@@ -118,7 +118,7 @@ main h2 {
 main .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   padding: 10px;
 }
@@ -127,7 +127,6 @@ main .card {
   position: relative;
   padding: 5px;
   border: solid 2px #fff;
-  margin-top: 20px;
 }
 
 .title, .original-title,  .language, .vote, .overview {
