@@ -10,7 +10,7 @@ new Vue({
     scelte: ['Film', 'Serie TV'],
     scelteId: 0,
     maxVote: 5,
-    lengFlagAv: ['cn', 'de', 'en','es', 'fr', 'it', 'ja', 'pt' ]
+    lengFlagAv: ['cn', 'de', 'en','es', 'fr', 'it', 'pt' ]
   },
 
   methods: {
@@ -18,6 +18,7 @@ new Vue({
       this.searchMovie();
       this.searchSeries();
       setTimeout(() => {
+        console.log(this.listaSerie)
         this.query = "";
       }, 1000)
     },
@@ -122,7 +123,7 @@ new Vue({
       if(poster == null) {
         imageRender = 'image/image-na.png';
       } else {
-        imageRender = `https://image.tmdb.org/t/p/w342${poster}`;
+        imageRender = `https://image.tmdb.org/t/p/w185${poster}`;
       }
       return imageRender;
     },

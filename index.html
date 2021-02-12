@@ -12,19 +12,21 @@
   <body>
     <div id="app" class="container">
       <header>
-        <div class="logo-bool">
-          <img src="image/logo-bool.png" alt="">
-        </div>
-        <div class="menu-scelta">
-          <div v-for="(element, index) in scelte" @click="changeTab(index)" :class="selectedTab(index)">{{element}}</div>
-        </div>
-        <div class="search">
-          <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
-          <div class="btn-search" @click="searchAll">
-            Cerca <i class="fas fa-angle-right"></i>
+        <div class="inner-header">
+          <div class="logo-bool">
+            <img src="image/logo-bool.png" alt="">
           </div>
+          <div class="menu-scelta">
+            <div v-for="(element, index) in scelte" @click="changeTab(index)" :class="selectedTab(index)">{{element}}</div>
+          </div>
+          <div class="search">
+            <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
+            <div class="btn-search" @click="searchAll">
+              Cerca <i class="fas fa-angle-right"></i>
+            </div>
+          </div>
+          <div class="alert-risultati">{{resultFor}}</div>
         </div>
-        <div class="alert-risultati">{{resultFor}}</div>
       </header>
 
       <main>
