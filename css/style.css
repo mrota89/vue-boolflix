@@ -39,15 +39,29 @@ header .logo-bool {
   width: 300px;
 }
 
-header .search {
-  width: 60%;
+header .menu-scelta {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 10%;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+header .menu-scelta .btn-menu-active {
+  border-bottom: solid 5px #e30813;
+}
+
+header .search {
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
 header input {
   height: 50px;
-  width: 500px;
+  width: 400px;
   font-size: 30px;
   padding: 10px;
   outline: none;
@@ -95,10 +109,10 @@ main h2 {
   border-top: solid #000 3px;
 }
 
-main .movie-container, .series-container {
+main .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   padding: 10px;
 }

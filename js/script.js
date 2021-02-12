@@ -4,16 +4,22 @@ new Vue({
   data: {
     query:'',
     resultFor: '',
+    listaDaMostrare: [],
     listaFilm: [],
     listaSerie: [],
+    scelte: ['Film', 'Serie TV'],
+    scelteId: 0,
     maxVote: 5,
-    lengFlagAv: ['ar', 'cn', 'de', 'en','es', 'fr', 'it', 'ja', 'pt' ]
+    lengFlagAv: ['cn', 'de', 'en','es', 'fr', 'it', 'ja', 'pt' ]
   },
 
   methods: {
     searchAll: function() {
       this.searchMovie();
       this.searchSeries();
+      setTimeout(() => {
+        this.query = "";
+      }, 1000)
     },
 
     searchMovie: function() {
@@ -22,6 +28,7 @@ new Vue({
         let dataObject = xhr.data;
         this.listaFilm = dataObject.results;
         this.voteFive(this.listaFilm);
+        this.listaDaMostrare = this.listaFilm;
         this.queryResult();
       });
     },
@@ -62,6 +69,24 @@ new Vue({
       });
     },
 
+    //ritorna la lista da renderizzare
+    changeTab: function(indexClickedTab) {
+      this.scelteId = indexClickedTab;
+      if(this.scelteId == 0) {
+        return this.listaDaMostrare = this.listaFilm;
+      } else {
+        return this.listaDaMostrare = this.listaSerie;
+      }
+    },
+
+    //evidenzia la tab selezionata
+    selectedTab: function(indexSelectedTab) {
+      const selected = 'btn-menu-active';
+      if (indexSelectedTab === this.scelteId) {
+        return selected;
+      }
+    },
+
     //flag per il render della lingua originale
     flagVisibility: function(index, lista) {
       const language = lista[index].original_language;
@@ -90,7 +115,7 @@ new Vue({
       return imageString;
     },
 
-    //restituisce il percorso file del'immagine di copertina
+    //restituisce il percorso file dell'immagine di copertina
     imagePoster: function(index, lista) {
       const poster = lista[index].poster_path;
       let imageRender;
@@ -102,7 +127,7 @@ new Vue({
       return imageRender;
     },
 
-    //restituisce la stringa in base alla corrispondenza di risultati con la query
+    //restituisce una stringa in base alla corrispondenza di risultati con la query
     queryResult: function() {
       if(this.listaFilm.length > 0 || this.listaSerie.length > 0) {
         return this.resultFor = `Risultati per: ${this.query}`;

@@ -15,6 +15,9 @@
         <div class="logo-bool">
           <img src="image/logo-bool.png" alt="">
         </div>
+        <div class="menu-scelta">
+          <div v-for="(element, index) in scelte" @click="changeTab(index)" :class="selectedTab(index)">{{element}}</div>
+        </div>
         <div class="search">
           <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
           <div class="btn-search" @click="searchAll">
@@ -25,30 +28,39 @@
       </header>
 
       <main>
-        <!-- container film -->
-        <h2 v-if="listaFilm.length > 0">Film</h2>
-        <div class="movie-container">
-          <!-- singola card film -->
-          <div v-for="(movie, index) in listaFilm" class="card movie">
+        <!-- container card-->
+        <div class="card-container">
+          <!-- singola card -->
+          <div v-for="(element, index) in listaDaMostrare" class="card">
             <div class="copertina">
-              <img :src="imagePoster(index, listaFilm)" alt="">
+              <img :src="imagePoster(index, listaDaMostrare)" alt="">
             </div>
 
             <div class="info">
               <div class="title">
-                <strong>Titolo:</strong><br>{{movie.title}}
+                <strong v-if="element.title">
+                  Titolo:
+                </strong><br>{{element.title}}
+                <strong v-if="element.name">
+                  Titolo:
+                </strong><br>{{element.name}}
               </div>
 
               <div class="original-title">
-                <strong>Titolo originale:</strong><br>{{movie.original_title}}
+                <strong v-if="element.original_title">
+                  Titolo originale:
+                </strong><br>{{element.original_title}}
+                <strong v-if="element.original_name">
+                  Titolo originale:
+                </strong><br>{{element.original_name}}
               </div>
 
               <div class="language">
                 <strong>Lingua originale:</strong>
-                <div class="string-box" v-if="!flagVisibility(index, listaFilm)">
-                  {{movie.original_language}}
+                <div class="string-box" v-if="!flagVisibility(index, listaDaMostrare)">
+                  {{element.original_language}}
                 </div>
-                <div class="box-image" v-if="flagVisibility(index, listaFilm)">
+                <div class="box-image" v-if="flagVisibility(index, listaDaMostrare)">
                   <img :src="flagLang(index, listaFilm)" alt="">
                 </div>
               </div>
@@ -56,77 +68,25 @@
               <div class="vote">
                 <strong>Voto:</strong><br>
                 <div class="star-vote">
-                  <i class="fas fa-star yellow-star" v-for="yellowStar in movie.yellowStar"></i>
-                  <i class="far fa-star" v-for="whiteStar in movie.whiteStar"></i>
+                  <i class="fas fa-star yellow-star" v-for="yellowStar in element.yellowStar"></i>
+                  <i class="far fa-star" v-for="whiteStar in element.whiteStar"></i>
                 </div>
               </div>
 
               <div class="overview">
                 <strong>Overview</strong> <br>
-                <div v-if="!overview(index, listaFilm)" class="not-avaible-overview">
+                <div v-if="!overview(index, listaDaMostrare)" class="not-available-overview">
                   Non disponibile
                 </div>
-                <div v-if="overview(index, listaFilm)" class="avaible-overview">
-                  {{movie.overview}}
+                <div v-if="overview(index, listaDaMostrare)" class="available-overview">
+                  {{element.overview}}
                 </div>
               </div>
             </div>
           </div>
-          <!-- /singola card film -->
+          <!-- /singola card -->
         </div>
-        <!-- /container film -->
-
-        <!-- container serie tv -->
-        <h2 v-if="listaSerie.length > 0">Serie TV</h2>
-        <div class="series-container">
-          <!-- singola card serie tv-->
-          <div v-for="(serie, index) in listaSerie" class="card vserie">
-            <div class="copertina">
-              <img :src="imagePoster(index, listaSerie)" alt="">
-            </div>
-
-            <div class="info">
-              <div class="title">
-                <strong>Titolo:</strong><br>{{serie.name}}
-              </div>
-
-              <div class="original-title">
-                <strong>Titolo originale:</strong><br>{{serie.original_name}}
-              </div>
-
-              <div class="language">
-                <strong>Lingua originale:</strong>
-                <div class="string-box" v-if="!flagVisibility(index, listaSerie)">
-                  {{serie.original_language}}
-                </div>
-                <div class="box-image" v-if="flagVisibility(index, listaSerie)">
-                  <img :src="flagLang(index, listaSerie)" alt="">
-                </div>
-              </div>
-
-              <div class="vote">
-                <strong>Voto:</strong><br>
-                <div class="star-vote">
-                  <i class="fas fa-star yellow-star" v-for="yellowStar in serie.yellowStar"></i>
-                  <i class="far fa-star" v-for="whiteStar in serie.whiteStar"></i>
-                </div>
-              </div>
-
-              <div class="overview">
-                <strong>Overview</strong> <br>
-                <div v-if="!overview(index, listaSerie)" class="not-avaible-overview">
-                  Non disponibile
-                </div>
-                <div v-if="overview(index, listaSerie)" class="avaible-overview">
-                  {{serie.overview}}
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <!-- /singola card serie tv-->
-        </div>
-        <!-- /container serie tv -->
+        <!-- /container card -->
       </main>
     </div>
 
