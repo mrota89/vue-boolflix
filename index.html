@@ -59,6 +59,14 @@
                 </strong><br>{{element.original_name}}
               </div>
 
+              <div v-if="flagDisplayCast" class="cast">
+                <strong>Cast:</strong><br>
+                <div v-if="element.actors.length > 0" v-for="attore in element.actors">
+                  <span>{{attore}}</span>
+                </div>
+                <span v-if="element.actors.length === 0">Non disponibile</span>
+              </div>
+
               <div class="language">
                 <strong>Lingua originale:</strong>
                 <div class="string-box" v-if="!flagVisibility(index, listaDaMostrare)">

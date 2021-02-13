@@ -2,6 +2,7 @@ new Vue({
   el: '#app',
 
   data: {
+    flagDisplayCast: false,
     query:'',
     resultFor: '',
     listaDaMostrare: [],
@@ -9,8 +10,6 @@ new Vue({
     listaSerie: [],
     listaIdFilm: [],
     listaIdSerie: [],
-    castFilm: [],
-    castSerie: [],
     scelte: ['Film', 'Serie TV'],
     scelteIDX: 0,
     maxVote: 5,
@@ -29,12 +28,15 @@ new Vue({
     searchMovie: function() {
       this.ajaxCall('https://api.themoviedb.org/3/search/movie')
       .then((xhr) => {
+        this.flagDisplayCast = false;
         let dataObject = xhr.data;
+        this.listaIdFilm = [];
         this.listaFilm = dataObject.results;
         this.voteFive(this.listaFilm);
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaFilm, this.listaIdFilm);
-        // this.actorCallsFilm(this.listaIdFilm);
+        this.actorCallsFilm();
+        this.displayDelay();
         this.queryResult();
       });
     },
@@ -42,12 +44,15 @@ new Vue({
     searchSeries: function() {
       this.ajaxCall('https://api.themoviedb.org/3/search/tv')
       .then((xhr) => {
+        this.flagDisplayCast = false;
         let dataObject = xhr.data;
+        this.listaIdSerie = [];
         this.listaSerie = dataObject.results;
         this.voteFive(this.listaSerie);
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaSerie, this.listaIdSerie);
-        this.actorCallsSerie(this.listaIdSerie, this.castSerie);
+        this.actorCallsSerie();
+        this.displayDelay();
         this.queryResult();
       });
     },
@@ -63,22 +68,41 @@ new Vue({
       });
     },
 
-    actorCallsFilm: function(listaId) {
-      listaId.forEach((element) => {
+    /*restituisce nell'oggetto film una proprietà con valore un array con i nomi
+    degli attori di quel film*/
+    actorCallsFilm: function() {
+      /*per ogni Id eseguo una chiamata ajax per ottenere i credits
+      del film corrispondente*/
+      this.listaIdFilm.forEach((element, index) => {
+        let arrayAttori = [];
         axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
           params: {
             api_key: '87afaf40f86102cb8e49027ba59c133d',
             language: 'en-US',
           },
         }).then((xhr) => {
-          let dataObject = xhr.cast;
-          this.castFilm = dataObject;
-        })
-      });
+          //accedo alle informazioni sul cast
+          let dataObject = xhr.data.cast;
+          //in questo modo prendo solo i primi 5 attori (nel caso di un ampio cast)
+          if(dataObject.length > 5) {
+            dataObject.length = 5
+          }
+          //pusho in un array i nomi degli attori
+          for (let i = 0; i < dataObject.length ; i++) {
+           arrayAttori.push(dataObject[i].original_name);
+          };
+          //pusho nell'oggetto film il corrispondete array di attori
+          this.listaFilm.forEach((film, indice) => {
+            if(index === indice) {
+              film.actors = arrayAttori;
+            };
+          });
+        });//end then
+      });//end listaIdFilm.ForEach
     },
 
-    actorCallsSerie: function(listaId, fiveActors) {
-      listaId.forEach((element) => {
+    actorCallsSerie: function() {
+      this.listaIdSerie.forEach((element, index) => {
         let arrayAttori = [];
         axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
           params: {
@@ -87,13 +111,22 @@ new Vue({
           },
         }).then((xhr) => {
           let dataObject = xhr.data.cast;
-          for (let i = 0; i < 5; i++) {
+          if(dataObject.length > 5) {
+            dataObject.length = 5
+          }
+          for (let i = 0; i < dataObject.length ; i++) {
             arrayAttori.push(dataObject[i].original_name);
           };
-          fiveActors.push(arrayAttori);
-        })
-      });
+          this.listaSerie.forEach((serie, indice) => {
+            if(index === indice) {
+              serie.actors = arrayAttori;
+            };
+          });
+        });//end then
+      });//end listaIdSerie.ForEach
     },
+
+
 
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar
     utilizzate per il render delle stelline*/
@@ -110,6 +143,7 @@ new Vue({
       });
     },
 
+    //pusha in un array gli id di ogni film
     IdElemFunction: function(lista, listaId) {
       lista.forEach((element) => {
         const {id} = element;
@@ -182,6 +216,14 @@ new Vue({
       } else {
         return this.resultFor = `Nessun risultato per: ${this.query}`;
       }
+    },
+
+    /* flag che dopo 5 secondi mostra la sezione attori nella scheda film/serie,
+    in modo da non rallentare il caricamento della pagina, dovuto alle molteplici chiamate ajax*/
+    displayDelay: function() {
+      setTimeout(() => {
+        return this.flagDisplayCast = true;
+      }, 5000)
     }
   }// end methods
 });//end vue app

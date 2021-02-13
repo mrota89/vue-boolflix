@@ -101,26 +101,27 @@ header .alert-risultati {;
 }
 
 main {
-  height: calc(100% - 200px);
-  margin: 0 auto;
-  margin-top: 180px;
   width: 80%;
+  margin: 0 auto;
+  margin-top: 200px;
 }
 
 main .card-container {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
 }
 
 main .card {
   position: relative;
   border: solid 2px #fff;
+  margin-top: 40px;
 }
 
-main .title, .original-title,  .language, .vote, .overview {
+main .title, .original-title,  .language, .cast, .vote, .overview {
   margin-top: 10px;
 }
 
