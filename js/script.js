@@ -7,8 +7,12 @@ new Vue({
     listaDaMostrare: [],
     listaFilm: [],
     listaSerie: [],
+    listaIdFilm: [],
+    listaIdSerie: [],
+    castFilm: [],
+    castSerie: [],
     scelte: ['Film', 'Serie TV'],
-    scelteId: 0,
+    scelteIDX: 0,
     maxVote: 5,
     lengFlagAv: ['ja', 'de', 'en', 'es', 'fr', 'it', 'pt']
   },
@@ -28,7 +32,9 @@ new Vue({
         let dataObject = xhr.data;
         this.listaFilm = dataObject.results;
         this.voteFive(this.listaFilm);
-        this.changeTab(this.scelteId);
+        this.changeTab(this.scelteIDX);
+        this.IdElemFunction(this.listaFilm, this.listaIdFilm);
+        // this.actorCallsFilm(this.listaIdFilm);
         this.queryResult();
       });
     },
@@ -39,7 +45,9 @@ new Vue({
         let dataObject = xhr.data;
         this.listaSerie = dataObject.results;
         this.voteFive(this.listaSerie);
-        this.changeTab(this.scelteId);
+        this.changeTab(this.scelteIDX);
+        this.IdElemFunction(this.listaSerie, this.listaIdSerie);
+        this.actorCallsSerie(this.listaIdSerie, this.castSerie);
         this.queryResult();
       });
     },
@@ -52,6 +60,38 @@ new Vue({
           query: this.query,
           language: 'it-IT',
         },
+      });
+    },
+
+    actorCallsFilm: function(listaId) {
+      listaId.forEach((element) => {
+        axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
+          params: {
+            api_key: '87afaf40f86102cb8e49027ba59c133d',
+            language: 'en-US',
+          },
+        }).then((xhr) => {
+          let dataObject = xhr.cast;
+          this.castFilm = dataObject;
+        })
+      });
+    },
+
+    actorCallsSerie: function(listaId, fiveActors) {
+      listaId.forEach((element) => {
+        let arrayAttori = [];
+        axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
+          params: {
+            api_key: '87afaf40f86102cb8e49027ba59c133d',
+            language: 'en-US',
+          },
+        }).then((xhr) => {
+          let dataObject = xhr.data.cast;
+          for (let i = 0; i < 5; i++) {
+            arrayAttori.push(dataObject[i].original_name);
+          };
+          fiveActors.push(arrayAttori);
+        })
       });
     },
 
@@ -70,10 +110,17 @@ new Vue({
       });
     },
 
+    IdElemFunction: function(lista, listaId) {
+      lista.forEach((element) => {
+        const {id} = element;
+        listaId.push(element.id)
+      });
+    },
+
     //ritorna la lista da renderizzare
     changeTab: function(indexClickedTab) {
-      this.scelteId = indexClickedTab;
-      if(this.scelteId == 0) {
+      this.scelteIDX = indexClickedTab;
+      if(this.scelteIDX == 0) {
         return this.listaDaMostrare = this.listaFilm;
       } else {
         return this.listaDaMostrare = this.listaSerie;
@@ -83,7 +130,7 @@ new Vue({
     //evidenzia la tab selezionata
     selectedTab: function(indexSelectedTab) {
       const selected = 'btn-menu-active';
-      if (indexSelectedTab === this.scelteId) {
+      if (indexSelectedTab === this.scelteIDX) {
         return selected;
       }
     },
