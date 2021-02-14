@@ -57,47 +57,21 @@ new Vue({
       });
     },
 
-    // restituisce l'esecuzione della chiamata axios
-    ajaxCall: function(URL) {
-      return axios.get(URL, {
-        params: {
-          api_key: '87afaf40f86102cb8e49027ba59c133d',
-          query: this.query,
-          language: 'it-IT',
-        },
-      });
-    },
-
-    /*restituisce nell'oggetto film una proprietà con valore un array con i nomi
-    degli attori di quel film*/
+    /*per ogni id di film/serie tv (presente in listaId), esegue una chiamata ajax
+    e successivamente la funzione thenCallsActors*/
     actorCallsFilm: function() {
       /*per ogni Id eseguo una chiamata ajax per ottenere i credits
       del film corrispondente*/
       this.listaIdFilm.forEach((element, index) => {
-        let arrayAttori = [];
         axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
           params: {
             api_key: '87afaf40f86102cb8e49027ba59c133d',
             language: 'en-US',
           },
         }).then((xhr) => {
-          //accedo alle informazioni sul cast
           let dataObject = xhr.data.cast;
-          //in questo modo prendo solo i primi 5 attori (nel caso di un ampio cast)
-          if(dataObject.length > 5) {
-            dataObject.length = 5
-          }
-          //pusho in un array i nomi degli attori
-          for (let i = 0; i < dataObject.length ; i++) {
-           arrayAttori.push(dataObject[i].original_name);
-          };
-          //pusho nell'oggetto film il corrispondete array di attori
-          this.listaFilm.forEach((film, indice) => {
-            if(index === indice) {
-              film.actors = arrayAttori;
-            };
-          });
-        });//end then
+          this.thenCallsActors(this.listaFilm, dataObject, index)
+        })
       });//end listaIdFilm.ForEach
     },
 
@@ -111,22 +85,41 @@ new Vue({
           },
         }).then((xhr) => {
           let dataObject = xhr.data.cast;
-          if(dataObject.length > 5) {
-            dataObject.length = 5
-          }
-          for (let i = 0; i < dataObject.length ; i++) {
-            arrayAttori.push(dataObject[i].original_name);
-          };
-          this.listaSerie.forEach((serie, indice) => {
-            if(index === indice) {
-              serie.actors = arrayAttori;
-            };
-          });
-        });//end then
+          this.thenCallsActors(this.listaSerie, dataObject, index)
+        });
       });//end listaIdSerie.ForEach
     },
 
+    // restituisce l'esecuzione della chiamata axios
+    ajaxCall: function(URL) {
+      return axios.get(URL, {
+        params: {
+          api_key: '87afaf40f86102cb8e49027ba59c133d',
+          query: this.query,
+          language: 'it-IT',
+        },
+      });
+    },
 
+    /* viene eseguito nel then dopo la chiamata axios alla api per i credits,
+      andando a pushare nell'oggetto film/serie il corrispondente array di attori*/
+    thenCallsActors: function(lista, dataObject, iElementIdList) {
+      let arrayAttori = [];
+      //in questo modo prendo solo i primi 5 attori
+      if(dataObject.length > 5) {
+        dataObject.length = 5
+      }
+      //pusho in un array i nomi degli attori
+      for (let i = 0; i < dataObject.length ; i++) {
+       arrayAttori.push(dataObject[i].original_name);
+      };
+      //pusho nell'oggetto film il corrispondete array di attori
+      lista.forEach((item, indice) => {
+        if(iElementIdList === indice) {
+          item.actors = arrayAttori;
+        };
+      });
+    },
 
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar
     utilizzate per il render delle stelline*/
@@ -182,7 +175,6 @@ new Vue({
     //flag per il render della sinossi
     overview: function(index, lista) {
       const sinossi = lista[index].overview;
-      let newSinossi;
       if(sinossi !== "") {
         return true;
       } else {
@@ -218,12 +210,12 @@ new Vue({
       }
     },
 
-    /* flag che dopo 5 secondi mostra la sezione attori nella scheda film/serie,
+    /* flag che dopo 2 secondi mostra la sezione attori nella scheda film/serie,
     in modo da non rallentare il caricamento della pagina, dovuto alle molteplici chiamate ajax*/
     displayDelay: function() {
       setTimeout(() => {
         return this.flagDisplayCast = true;
-      }, 5000)
+      }, 2000)
     }
   }// end methods
 });//end vue app
