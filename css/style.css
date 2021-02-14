@@ -121,7 +121,7 @@ main .card {
   margin-top: 40px;
 }
 
-main .title, .original-title,  .language, .cast, .vote, .overview {
+main .title, .original-title,  .language, .cast, .vote, .overview, .genre {
   margin-top: 10px;
 }
 

@@ -2,7 +2,7 @@ new Vue({
   el: '#app',
 
   data: {
-    flagDisplayCast: false,
+    flagDisplaySection: false,
     query:'',
     resultFor: '',
     listaDaMostrare: [],
@@ -35,6 +35,7 @@ new Vue({
         this.voteFive(this.listaFilm);
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaFilm, this.listaIdFilm);
+        this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilm);
         this.actorCallsFilm();
         this.displayDelay();
         this.queryResult();
@@ -51,9 +52,34 @@ new Vue({
         this.voteFive(this.listaSerie);
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaSerie, this.listaIdSerie);
+        this.genreCall('https://api.themoviedb.org/3/genre/tv/list', this.listaSerie);
         this.actorCallsSerie();
         this.displayDelay();
         this.queryResult();
+      });
+    },
+
+    //restituisce lista generi del film/serie tv
+	  genreCall: function(URL, listaSerieOrFilm) {
+      axios.get(URL, {
+        params: {
+          api_key: '87afaf40f86102cb8e49027ba59c133d',
+          language: 'it-IT',
+        },
+      }).then((xhr) => {
+        let dataObject = xhr.data.genres;
+        listaSerieOrFilm.forEach((element) => {
+          const {genre_ids} = element;
+          let arrayGeneri = [];
+
+          dataObject.forEach((genere) => {
+            const {id, name} = genere;
+            if(genre_ids.includes(genere.id)) {
+              arrayGeneri.push(genere.name)
+            };
+          });
+          element.generi = arrayGeneri;
+        });
       });
     },
 
@@ -77,7 +103,6 @@ new Vue({
 
     actorCallsSerie: function() {
       this.listaIdSerie.forEach((element, index) => {
-        let arrayAttori = [];
         axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
           params: {
             api_key: '87afaf40f86102cb8e49027ba59c133d',
@@ -103,7 +128,7 @@ new Vue({
 
     /* viene eseguito nel then dopo la chiamata axios alla api per i credits,
       andando a pushare nell'oggetto film/serie il corrispondente array di attori*/
-    thenCallsActors: function(lista, dataObject, iElementIdList) {
+    thenCallsActors: function(lista, dataObject, indexElementIdList) {
       let arrayAttori = [];
       //in questo modo prendo solo i primi 5 attori
       if(dataObject.length > 5) {
@@ -115,7 +140,7 @@ new Vue({
       };
       //pusho nell'oggetto film il corrispondete array di attori
       lista.forEach((item, indice) => {
-        if(iElementIdList === indice) {
+        if(indexElementIdList === indice) {
           item.actors = arrayAttori;
         };
       });
@@ -214,8 +239,8 @@ new Vue({
     in modo da non rallentare il caricamento della pagina, dovuto alle molteplici chiamate ajax*/
     displayDelay: function() {
       setTimeout(() => {
-        return this.flagDisplayCast = true;
-      }, 2000)
+        return this.flagDisplaySection = true;
+      }, 5000)
     }
   }// end methods
 });//end vue app

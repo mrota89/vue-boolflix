@@ -59,15 +59,20 @@
                 </strong><br>{{element.original_name}}
               </div>
 
-              <!--* questa sezione viene mostrata successivamente, in modo da
-                concludere le chiamate ajax per ottenere i dati sul cast,
+              <!--* queste sezioni vengono mostrati successivamente, in modo da
+                concludere le chiamate ajax per ottenere i dati su cast e generi,
                 evitando di rallentare il caricamento delle singole cards film /serie *-->
-              <div v-if="flagDisplayCast" class="cast">
+              <div v-if="flagDisplaySection" class="cast">
                 <strong>Cast:</strong><br>
                 <div v-if="element.actors.length > 0" v-for="attore in element.actors">
                   <span>{{attore}}</span>
                 </div>
                 <span v-if="element.actors.length === 0">Non disponibile</span>
+              </div>
+
+              <div v-if="flagDisplaySection && element.generi.length > 0" class="genre">
+                <strong>Generi:</strong><br>
+                <div v-for="genere in element.generi">{{genere}}</div>
               </div>
               <!-- ***********************************************************-->
 
