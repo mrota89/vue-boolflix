@@ -73,7 +73,7 @@ header .search {
 header input {
   height: 50px;
   width: 300px;
-  font-size: 30px;
+  font-size: 20px;
   padding: 10px;
   outline: none;
   color: #000;
@@ -100,7 +100,6 @@ header .btn-search {
 }
 
 header .box-query-empty {
-  height: 80px;
   width: 100%;
   text-align: center;
 }

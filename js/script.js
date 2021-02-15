@@ -27,6 +27,11 @@ new Vue({
     .then((xhr) => {
       this.dataListaTrend = xhr.data;
       this.thenShowMostView();
+      //effettua lo slide-show automatico dei titoli in homepage
+      setInterval(() => {
+        this.listaTrend = [];
+        this.thenShowMostView();
+      }, 10000);
     })
   },
 
@@ -35,6 +40,7 @@ new Vue({
       this.scelteIDX = 1;
       this.searchMovie();
       this.searchSeries();
+      this.searchEmpty();
       setTimeout(() => {
         this.query = "";
       }, 5000)
@@ -184,7 +190,6 @@ new Vue({
 
     //ritorna all'imterno di listaTrend l'oggetto da mostare in homepage
     thenShowMostView: function() {
-      this.listaTrend = [];
       let indexRandom = this.randomNumber(0, 20);
       this.listaTrend.push(this.dataListaTrend.results[indexRandom]);
       this.voteFive(this.listaTrend);
@@ -198,11 +203,9 @@ new Vue({
       } else if(this.scelteIDX == 1) {
         this.listaDaMostrare = this.listaFilm;
         this.flagDisplayHome = false;
-        this.thenShowMostView();
       } else {
         this.listaDaMostrare = this.listaSerie;
         this.flagDisplayHome = false;
-        this.thenShowMostView();
       }
     },
 
@@ -267,6 +270,12 @@ new Vue({
         return this.resultFor = `Risultati per: ${this.query}`;
       } else {
         return this.resultFor = `Nessun risultato per: ${this.query}`;
+      }
+    },
+
+    searchEmpty: function() {
+      if(this.query === '') {
+        this.query = 'Inserire una parola chiave'
       }
     },
 

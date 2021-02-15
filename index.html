@@ -31,8 +31,8 @@
             <div v-if="queryEmpty()">
               <strong>Scrivere una parola chiave per iniziare la ricerca</strong>
             </div>
+            <div v-if="scelteIDX > 0" class="alert-risultati">{{resultFor}}</div>
           </div>
-          <div v-if="scelteIDX > 0" class="alert-risultati">{{resultFor}}</div>
         </div>
       </header>
 
