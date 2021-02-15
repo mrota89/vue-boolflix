@@ -189,7 +189,7 @@ new Vue({
 
     //ritorna all'imterno di listaTrend l'oggetto da mostare in homepage
     thenShowMostView: function() {
-      let indexRandom = this.randomNumber(0, 20);
+      let indexRandom = this.randomNumber(0, 19);
       this.listaTrend.push(this.dataListaTrend.results[indexRandom]);
       this.voteFive(this.listaTrend);
     },
