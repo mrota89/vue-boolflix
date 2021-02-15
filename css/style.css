@@ -24,7 +24,8 @@ img {
   width: 100%;
   max-width: 1400px;
   min-width: 950px;
-  background: linear-gradient(0deg, #e30813 0%, #000 40%);
+  height: calc(100% - 40px);
+  background: linear-gradient(0deg,  #000 30%, #e30813 70%);
 }
 
 header {
@@ -113,7 +114,12 @@ header .alert-risultati {;
 main {
   width: 80%;
   margin: 0 auto;
-  margin-top: 150px;
+  margin-top: 180px;
+}
+
+main .pagina-errore {
+  margin-top: 30px;
+  font-size: 100px;
 }
 
 main .home-page {
@@ -123,26 +129,25 @@ main .home-page {
 }
 
 main .home-page .immagine-suggerita {
-  width: 500px;
+  width: 25vw;
 }
 
 main .home-page .info-homepage, .consiglio {
   position: absolute;
-  position: absolute;
   transform: translate(-50% , -50%);
-  top: 30%;
-  left: 80%;
+  top: 50%;
+  left: 70%;
   width: 50%;
-  height: 50%;
+  height: 70%;
 }
 
 main .home-page .consiglio {
-  top: 100%;
-  width: 30%;
-  height: 25%;
-  background: #000;
+  top: 5%;
+  left: 95%;
+  width: max-content;
+  height: max-content;
   text-align: center;
-  font-size: 40px;
+  font-size: 80%;
 }
 
 main .info-homepage .lingua-home .box-image-home {
@@ -208,5 +213,5 @@ main .info .box-image {
 }
 
 .yellow-star {
-  color: #e30813;
+  color: #ffff00;
 }

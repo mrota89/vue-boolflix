@@ -31,12 +31,18 @@
             <div v-if="queryEmpty()">
               <strong>Scrivere una parola chiave per iniziare la ricerca</strong>
             </div>
-            <div v-if="scelteIDX > 0" class="alert-risultati">{{resultFor}}</div>
+            <div v-if="!queryEmpty() && scelteIDX > 0" class="alert-risultati">
+              {{resultFor}}
+            </div>
           </div>
         </div>
       </header>
 
       <main>
+        <div v-if="dataListaTrend.length == 0" class="pagina-errore">
+          Ops! Qualcosa è andato storto.
+          Riprova a caricare la pagina oppure torna più tardi.
+        </div>
         <!-- container homepage -->
         <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
           <div class="immagine-suggerita">

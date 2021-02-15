@@ -80,7 +80,6 @@ new Vue({
       });
     },
 
-
     // restituisce l'esecuzione della chiamata axios
     ajaxCall: function(URL) {
       return axios.get(URL, {
