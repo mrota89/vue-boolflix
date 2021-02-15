@@ -2,22 +2,37 @@ new Vue({
   el: '#app',
 
   data: {
+    apiKey: '87afaf40f86102cb8e49027ba59c133d',
+    flagDisplayHome: true,
     flagDisplaySection: false,
     query:'',
     resultFor: '',
     listaDaMostrare: [],
     listaFilm: [],
     listaSerie: [],
+    dataListaTrend: [],
+    listaTrend: [],
     listaIdFilm: [],
     listaIdSerie: [],
-    scelte: ['Film', 'Serie TV'],
+    scelte: ['Home', 'Film', 'Serie TV'],
     scelteIDX: 0,
     maxVote: 5,
     lengFlagAv: ['ja', 'de', 'en', 'es', 'fr', 'it', 'pt']
   },
 
+  mounted() {
+    /*al caricamento della pagina, mostra un film/serie tv preso randomicamente
+     dall'apposita api*/
+    axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${this.apiKey}`)
+    .then((xhr) => {
+      this.dataListaTrend = xhr.data;
+      this.thenShowMostView();
+    })
+  },
+
   methods: {
     searchAll: function() {
+      this.scelteIDX = 1;
       this.searchMovie();
       this.searchSeries();
       setTimeout(() => {
@@ -28,7 +43,7 @@ new Vue({
     searchMovie: function() {
       this.ajaxCall('https://api.themoviedb.org/3/search/movie')
       .then((xhr) => {
-        this.flagDisplayCast = false;
+        this.flagDisplaySection = false;
         let dataObject = xhr.data;
         this.listaIdFilm = [];
         this.listaFilm = dataObject.results;
@@ -45,7 +60,7 @@ new Vue({
     searchSeries: function() {
       this.ajaxCall('https://api.themoviedb.org/3/search/tv')
       .then((xhr) => {
-        this.flagDisplayCast = false;
+        this.flagDisplaySection = false;
         let dataObject = xhr.data;
         this.listaIdSerie = [];
         this.listaSerie = dataObject.results;
@@ -59,11 +74,43 @@ new Vue({
       });
     },
 
+
+    // restituisce l'esecuzione della chiamata axios
+    ajaxCall: function(URL) {
+      return axios.get(URL, {
+        params: {
+          api_key: this.apiKey,
+          query: this.query,
+          language: 'it-IT',
+        },
+      });
+    },
+
+    /* viene eseguito nel then dopo la chiamata axios alla api per i credits,
+      andando a pushare nell'oggetto film/serie il corrispondente array di attori*/
+    thenCallsActors: function(lista, dataObject, indexElementIdList) {
+      let arrayAttori = [];
+      //in questo modo prendo solo i primi 5 attori
+      if(dataObject.length > 5) {
+        dataObject.length = 5
+      }
+      //pusho in un array i nomi degli attori
+      for (let i = 0; i < dataObject.length ; i++) {
+       arrayAttori.push(dataObject[i].original_name);
+      };
+      //pusho nell'oggetto film il corrispondete array di attori
+      lista.forEach((item, indice) => {
+        if(indexElementIdList === indice) {
+          item.actors = arrayAttori;
+        };
+      });
+    },
+
     //restituisce lista generi del film/serie tv
-	  genreCall: function(URL, listaSerieOrFilm) {
+    genreCall: function(URL, listaSerieOrFilm) {
       axios.get(URL, {
         params: {
-          api_key: '87afaf40f86102cb8e49027ba59c133d',
+          api_key: this.apiKey,
           language: 'it-IT',
         },
       }).then((xhr) => {
@@ -91,7 +138,7 @@ new Vue({
       this.listaIdFilm.forEach((element, index) => {
         axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
           params: {
-            api_key: '87afaf40f86102cb8e49027ba59c133d',
+            api_key: this.apiKey,
             language: 'en-US',
           },
         }).then((xhr) => {
@@ -105,7 +152,7 @@ new Vue({
       this.listaIdSerie.forEach((element, index) => {
         axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
           params: {
-            api_key: '87afaf40f86102cb8e49027ba59c133d',
+            api_key: this.apiKey,
             language: 'en-US',
           },
         }).then((xhr) => {
@@ -113,37 +160,6 @@ new Vue({
           this.thenCallsActors(this.listaSerie, dataObject, index)
         });
       });//end listaIdSerie.ForEach
-    },
-
-    // restituisce l'esecuzione della chiamata axios
-    ajaxCall: function(URL) {
-      return axios.get(URL, {
-        params: {
-          api_key: '87afaf40f86102cb8e49027ba59c133d',
-          query: this.query,
-          language: 'it-IT',
-        },
-      });
-    },
-
-    /* viene eseguito nel then dopo la chiamata axios alla api per i credits,
-      andando a pushare nell'oggetto film/serie il corrispondente array di attori*/
-    thenCallsActors: function(lista, dataObject, indexElementIdList) {
-      let arrayAttori = [];
-      //in questo modo prendo solo i primi 5 attori
-      if(dataObject.length > 5) {
-        dataObject.length = 5
-      }
-      //pusho in un array i nomi degli attori
-      for (let i = 0; i < dataObject.length ; i++) {
-       arrayAttori.push(dataObject[i].original_name);
-      };
-      //pusho nell'oggetto film il corrispondete array di attori
-      lista.forEach((item, indice) => {
-        if(indexElementIdList === indice) {
-          item.actors = arrayAttori;
-        };
-      });
     },
 
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar
@@ -161,22 +177,41 @@ new Vue({
       });
     },
 
-    //pusha in un array gli id di ogni film
-    IdElemFunction: function(lista, listaId) {
-      lista.forEach((element) => {
-        const {id} = element;
-        listaId.push(element.id)
-      });
+    randomNumber: function (min, max) {
+      var result = Math.floor(Math.random() * (max + 1 - min) + min);
+      return result;
+    },
+
+    //ritorna all'imterno di listaTrend l'oggetto da mostare in homepage
+    thenShowMostView: function() {
+      this.listaTrend = [];
+      let indexRandom = this.randomNumber(0, 20);
+      this.listaTrend.push(this.dataListaTrend.results[indexRandom]);
+      this.voteFive(this.listaTrend);
     },
 
     //ritorna la lista da renderizzare
     changeTab: function(indexClickedTab) {
       this.scelteIDX = indexClickedTab;
       if(this.scelteIDX == 0) {
-        return this.listaDaMostrare = this.listaFilm;
+        this.flagDisplayHome = true;
+      } else if(this.scelteIDX == 1) {
+        this.listaDaMostrare = this.listaFilm;
+        this.flagDisplayHome = false;
+        this.thenShowMostView();
       } else {
-        return this.listaDaMostrare = this.listaSerie;
+        this.listaDaMostrare = this.listaSerie;
+        this.flagDisplayHome = false;
+        this.thenShowMostView();
       }
+    },
+
+    //pusha in un array gli id di ogni film
+    IdElemFunction: function(lista, listaId) {
+      lista.forEach((element) => {
+        const {id} = element;
+        listaId.push(element.id)
+      });
     },
 
     //evidenzia la tab selezionata
@@ -215,13 +250,13 @@ new Vue({
     },
 
     //restituisce il percorso file dell'immagine di copertina
-    imagePoster: function(index, lista) {
+    imagePoster: function(index, lista, dimensioni) {
       const poster = lista[index].poster_path;
       let imageRender;
       if(poster == null) {
         imageRender = 'image/image-na.png';
       } else {
-        imageRender = `https://image.tmdb.org/t/p/w185${poster}`;
+        imageRender = `https://image.tmdb.org/t/p/${dimensioni}${poster}`;
       }
       return imageRender;
     },
@@ -235,12 +270,21 @@ new Vue({
       }
     },
 
+    //mostra l'alert in caso di ricerca con query vuota
+    queryEmpty: function() {
+      if(this.query == '' && this.scelteIDX !== 0 && this.listaDaMostrare.length === 0) {
+        return true
+      } else {
+        return false
+      }
+    },
+
     /* flag che dopo 2 secondi mostra la sezione attori nella scheda film/serie,
     in modo da non rallentare il caricamento della pagina, dovuto alle molteplici chiamate ajax*/
     displayDelay: function() {
       setTimeout(() => {
         return this.flagDisplaySection = true;
-      }, 5000)
+      }, 2000)
     }
   }// end methods
 });//end vue app

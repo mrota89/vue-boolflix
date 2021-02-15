@@ -14,13 +14,17 @@ img {
   width: 100%;
 }
 
+.mrg-top {
+  margin-top: 10px;
+}
+/* /utility class */
+
 .container {
   margin: 20px auto;
   width: 100%;
   max-width: 1400px;
   min-width: 950px;
   background: linear-gradient(0deg, #e30813 0%, #000 40%);
-  box-shadow: 2px 9px 26px 7px #e30813;
 }
 
 header {
@@ -29,6 +33,7 @@ header {
   z-index: 2;
   width: 100%;
   max-width: 1400px;
+  box-shadow: 2px 9px 26px 7px #e30813;
 }
 
 header .inner-header {
@@ -94,6 +99,12 @@ header .btn-search {
   vertical-align: middle;
 }
 
+header .box-query-empty {
+  height: 80px;
+  width: 100%;
+  text-align: center;
+}
+
 header .alert-risultati {;
   width: 100%;
   font-size: 30px;
@@ -103,7 +114,50 @@ header .alert-risultati {;
 main {
   width: 80%;
   margin: 0 auto;
-  margin-top: 200px;
+  margin-top: 150px;
+}
+
+main .home-page {
+  width: 100%;
+  position: relative;
+  font-size: 30px;
+}
+
+main .home-page .immagine-suggerita {
+  width: 500px;
+}
+
+main .home-page .info-homepage, .consiglio {
+  position: absolute;
+  position: absolute;
+  transform: translate(-50% , -50%);
+  top: 30%;
+  left: 80%;
+  width: 50%;
+  height: 50%;
+}
+
+main .home-page .consiglio {
+  top: 100%;
+  width: 30%;
+  height: 25%;
+  background: #000;
+  text-align: center;
+  font-size: 40px;
+}
+
+main .info-homepage .lingua-home .box-image-home {
+  width: 30px;
+}
+
+main .info-homepage .valutazione-home, .lingua-home {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+
+main .info-homepage .overview-home  div {
+  font-size: 20px;
 }
 
 main .card-container {
@@ -119,10 +173,6 @@ main .card {
   position: relative;
   border: solid 2px #fff;
   margin-top: 40px;
-}
-
-main .title, .original-title,  .language, .cast, .vote, .overview, .genre {
-  margin-top: 10px;
 }
 
 main .copertina {
@@ -159,5 +209,5 @@ main .info .box-image {
 }
 
 .yellow-star {
-  color: #ffff00;
+  color: #e30813;
 }

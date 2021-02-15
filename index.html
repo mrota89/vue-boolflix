@@ -27,21 +27,74 @@
               Cerca <i class="fas fa-angle-right"></i>
             </div>
           </div>
-          <div class="alert-risultati">{{resultFor}}</div>
+          <div class="box-query-empty">
+            <div v-if="queryEmpty()">
+              <strong>Scrivere una parola chiave per iniziare la ricerca</strong>
+            </div>
+          </div>
+          <div v-if="scelteIDX > 0" class="alert-risultati">{{resultFor}}</div>
         </div>
       </header>
 
       <main>
-        <!-- container card-->
-        <div class="card-container">
+        <!-- container homepage -->
+        <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
+          <div class="immagine-suggerita">
+            <img :src="imagePoster(index, listaTrend, 'w500')" alt="">
+          </div>
+
+          <div class="info-homepage">
+            <div class="titolo">
+              <strong v-if="element.title">
+                Titolo:
+              </strong> {{element.title}}
+              <strong v-if="element.name">
+                Titolo:
+              </strong> {{element.name}}
+            </div>
+
+            <div class="valutazione-home mrg-top">
+              <strong>Voto:</strong>
+              <div class="star-vote">
+                <i class="fas fa-star yellow-star" v-for="yellowStar in element.yellowStar"></i>
+                <i class="far fa-star" v-for="whiteStar in element.whiteStar"></i>
+              </div>
+            </div>
+
+            <div class="lingua-home mrg-top">
+              <strong>Lingua originale:</strong>
+              <div class="string-box" v-if="!flagVisibility(index, listaTrend)">
+                {{element.original_language}}
+              </div>
+              <div class="box-image-home" v-if="flagVisibility(index, listaTrend)">
+                <img :src="flagLang(index, listaTrend)" alt="">
+              </div>
+            </div>
+
+            <div class="overview-home mrg-top">
+              <strong>Overview:</strong><br>
+              <div v-if="overview(index, listaTrend)" class="available-overview">
+                {{element.overview}}
+              </div>
+            </div>
+          </div>
+
+          <div class="consiglio">
+            <em>Tra i più visti di questa settimana</em>
+          </div>
+        </div>
+        <!-- container homepage -->
+
+        <!-- container card -->
+        <div v-if="flagDisplayHome === false" class="card-container">
           <!-- singola card -->
           <div v-for="(element, index) in listaDaMostrare" class="card">
             <div class="copertina">
-              <img :src="imagePoster(index, listaDaMostrare)" alt="">
+              <img :src="imagePoster(index, listaDaMostrare, 'w185')" alt="">
             </div>
 
             <div class="info">
-              <div class="title">
+              <div class="title mrg-top">
                 <strong v-if="element.title">
                   Titolo:
                 </strong><br>{{element.title}}
@@ -50,7 +103,7 @@
                 </strong><br>{{element.name}}
               </div>
 
-              <div class="original-title">
+              <div class="original-title mrg-top">
                 <strong v-if="element.original_title">
                   Titolo originale:
                 </strong><br>{{element.original_title}}
@@ -59,10 +112,10 @@
                 </strong><br>{{element.original_name}}
               </div>
 
-              <!--* queste sezioni vengono mostrati successivamente, in modo da
+              <!--* queste sezioni vengono mostrate successivamente, in modo da
                 concludere le chiamate ajax per ottenere i dati su cast e generi,
                 evitando di rallentare il caricamento delle singole cards film /serie *-->
-              <div v-if="flagDisplaySection" class="cast">
+              <div v-if="flagDisplaySection" class="cast mrg-top">
                 <strong>Cast:</strong><br>
                 <div v-if="element.actors.length > 0" v-for="attore in element.actors">
                   <span>{{attore}}</span>
@@ -70,13 +123,13 @@
                 <span v-if="element.actors.length === 0">Non disponibile</span>
               </div>
 
-              <div v-if="flagDisplaySection && element.generi.length > 0" class="genre">
+              <div v-if="flagDisplaySection && element.generi.length > 0" class="genre mrg-top">
                 <strong>Generi:</strong><br>
                 <div v-for="genere in element.generi">{{genere}}</div>
               </div>
               <!-- ***********************************************************-->
 
-              <div class="language">
+              <div class="language mrg-top">
                 <strong>Lingua originale:</strong>
                 <div class="string-box" v-if="!flagVisibility(index, listaDaMostrare)">
                   {{element.original_language}}
@@ -86,7 +139,7 @@
                 </div>
               </div>
 
-              <div class="vote">
+              <div class="vote mrg-top">
                 <strong>Voto:</strong><br>
                 <div class="star-vote">
                   <i class="fas fa-star yellow-star" v-for="yellowStar in element.yellowStar"></i>
@@ -94,8 +147,8 @@
                 </div>
               </div>
 
-              <div class="overview">
-                <strong>Overview</strong> <br>
+              <div class="overview mrg-top">
+                <strong>Overview</strong><br>
                 <div v-if="!overview(index, listaDaMostrare)" class="not-available-overview">
                   Non disponibile
                 </div>
