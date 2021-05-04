@@ -46,7 +46,7 @@
         <!-- container homepage -->
         <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
           <div class="immagine-suggerita">
-            <img :src="imagePoster(index, listaTrend, 'w500')" alt="">
+            <img :src="imagePoster(index, listaTrend, 'w1280')" alt="">
           </div>
 
           <div class="info-homepage">
@@ -87,6 +87,10 @@
 
           <div class="consiglio">
             <em>Tra i più visti di questa settimana</em>
+          </div>
+
+          <div class="slider-container">
+
           </div>
         </div>
         <!-- container homepage -->

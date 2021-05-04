@@ -12,6 +12,12 @@ new Vue({
     listaSerie: [],
     dataListaTrend: [],
     listaTrend: [],
+    dataListaFilmHome: [],
+    dataListaSerieHome: [],
+    listaFilmHome: [],
+    listaSerieHome: [],
+    listaIdFilmHome: [],
+    listaIdSerieHome: [],
     listaIdFilm: [],
     listaIdSerie: [],
     scelte: ['Home', 'Film', 'Serie TV'],
@@ -32,6 +38,30 @@ new Vue({
         this.listaTrend = [];
         this.thenShowMostView();
       }, 10000);
+    })
+
+    axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${this.apiKey}`)
+    .then((xhr) => {
+      this.dataListaFilmHome = xhr.data;
+      this.listaIdFilmHome = [];
+      this.listaFilmHome = this.dataListaFilmHome.results;
+      this.voteFive(this.listaFilmHome);
+      this.IdElemFunction(this.listaFilmHome, this.listaIdFilmHome);
+      this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilmHome);
+      this.actorCallsFilmHome();
+      this.displayDelay();
+    })
+
+    axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${this.apiKey}`)
+    .then((xhr) => {
+      this.dataListaSerieHome = xhr.data;
+      this.listaIdSerieHome = [];
+      this.listaSerieHome = this.dataListaSerieHome.results;
+      this.voteFive(this.listaSerieHome);
+      this.IdElemFunction(this.listaSerieHome, this.listaIdSerieHome);
+      this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaSerieHome);
+      this.actorCallsSerieHome();
+      this.displayDelay();
     })
   },
 
@@ -153,6 +183,20 @@ new Vue({
       });//end listaIdFilm.ForEach
     },
 
+    actorCallsFilmHome: function() {
+      this.listaIdFilmHome.forEach((element, index) => {
+        axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
+          params: {
+            api_key: this.apiKey,
+            language: 'en-US',
+          },
+        }).then((xhr) => {
+          let dataObject = xhr.data.cast;
+          this.thenCallsActors(this.listaFilmHome, dataObject, index)
+        })
+      });//end listaIdFilmHome.ForEach
+    },
+
     actorCallsSerie: function() {
       this.listaIdSerie.forEach((element, index) => {
         axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
@@ -165,6 +209,20 @@ new Vue({
           this.thenCallsActors(this.listaSerie, dataObject, index)
         });
       });//end listaIdSerie.ForEach
+    },
+
+    actorCallsSerieHome: function() {
+      this.listaIdSerieHome.forEach((element, index) => {
+        axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
+          params: {
+            api_key: this.apiKey,
+            language: 'en-US',
+          },
+        }).then((xhr) => {
+          let dataObject = xhr.data.cast;
+          this.thenCallsActors(this.listaSerieHome, dataObject, index)
+        })
+      });//end listaIdFilmHome.ForEach
     },
 
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar
@@ -253,7 +311,7 @@ new Vue({
 
     //restituisce il percorso file dell'immagine di copertina
     imagePoster: function(index, lista, dimensioni) {
-      const poster = lista[index].poster_path;
+      const poster = lista[index].backdrop_path;
       let imageRender;
       if(poster == null) {
         imageRender = 'image/image-na.png';
