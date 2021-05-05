@@ -46,7 +46,7 @@
         <!-- container homepage -->
         <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
           <div class="immagine-suggerita">
-            <img :src="imagePoster(index, listaTrend, 'w1280')" alt="">
+            <img :src="imagePoster(listaTrend[index].backdrop_path, 'w1280')" alt="">
           </div>
 
           <div class="info-homepage">
@@ -89,18 +89,87 @@
             <em>Tra i più visti di questa settimana</em>
           </div>
 
+          <!-- sezione slider homepage film -->
           <div class="slider-container">
 
+            <div class="prev">
+              <i class="fas fa-angle-left" ></i>
+            </div>
+            
+            <div v-for="(element, index) in listaFilmHomeSlider" class="card">
+              <div class="poster-slider">
+                <img :src="imagePoster(listaFilmHomeSlider[index].poster_path, 'w342')" alt="">
+              </div>
+  
+              <div class="info-slider">
+                <div class="title mrg-top">
+                  <strong>Titolo:</strong><br>{{element.title}}
+                </div>
+  
+                <div class="original-title mrg-top">
+                  <strong>Titolo originale</strong><br>{{element.original_title}}
+                </div>
+  
+                <!--* queste sezioni vengono mostrate successivamente, in modo da
+                  concludere le chiamate ajax per ottenere i dati su cast e generi,
+                  evitando di rallentare il caricamento delle singole cards film /serie *-->
+                <div v-if="flagDisplaySection" class="cast mrg-top">
+                  <strong>Cast:</strong><br>
+                  <div v-if="element.actors.length > 0" v-for="attore in element.actors">
+                    <span>{{attore}}</span>
+                  </div>
+                  <span v-if="element.actors.length === 0">Non disponibile</span>
+                </div>
+  
+                <div v-if="flagDisplaySection && element.generi.length > 0" class="genre mrg-top">
+                  <strong>Generi:</strong><br>
+                  <div v-for="genere in element.generi">{{genere}}</div>
+                </div>
+                <!-- ***********************************************************-->
+  
+                <div class="language mrg-top">
+                  <strong>Lingua originale:</strong>
+                  <div class="string-box" v-if="!flagVisibility(index, listaFilmHomeSlider)">
+                    {{element.original_language}}
+                  </div>
+                  <div class="box-image" v-if="flagVisibility(index, listaFilmHomeSlider)">
+                    <img :src="flagLang(index, listaFilmHomeSlider)" alt="">
+                  </div>
+                </div>
+  
+                <div class="vote mrg-top">
+                  <strong>Voto:</strong><br>
+                  <div class="star-vote">
+                    <i class="fas fa-star yellow-star" v-for="yellowStar in element.yellowStar"></i>
+                    <i class="far fa-star" v-for="whiteStar in element.whiteStar"></i>
+                  </div>
+                </div>
+  
+                <div class="overview mrg-top">
+                  <strong>Overview</strong><br>
+                  <div v-if="!overview(index, listaFilmHomeSlider)" class="not-available-overview">
+                    Non disponibile
+                  </div>
+                  <div v-if="overview(index, listaFilmHomeSlider)" class="available-overview">
+                    {{element.overview}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="next">
+              <i class="fas fa-angle-right"></i>
+            </div>
           </div>
+          <!-- /sezione slider homepage film -->
         </div>
-        <!-- container homepage -->
+        <!-- /container homepage -->
 
-        <!-- container card -->
+        <!-- container card sezione ricerca -->
         <div v-if="flagDisplayHome === false" class="card-container">
           <!-- singola card -->
           <div v-for="(element, index) in listaDaMostrare" class="card">
             <div class="copertina">
-              <img :src="imagePoster(index, listaDaMostrare, 'w185')" alt="">
+              <img :src="imagePoster(listaDaMostrare[index].poster_path, 'w185')" alt="">
             </div>
 
             <div class="info">
@@ -170,10 +239,9 @@
           </div>
           <!-- /singola card -->
         </div>
-        <!-- /container card -->
+        <!-- /container card sezione ricerca -->
       </main>
     </div>
-
   <script src="js/script.js" charset="utf-8"></script>
   </body>
 </html>

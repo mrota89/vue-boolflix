@@ -10,16 +10,27 @@ new Vue({
     listaDaMostrare: [],
     listaFilm: [],
     listaSerie: [],
+    listaIdFilm: [],
+    listaIdSerie: [],
+
     dataListaTrend: [],
     listaTrend: [],
+
     dataListaFilmHome: [],
     dataListaSerieHome: [],
     listaFilmHome: [],
     listaSerieHome: [],
     listaIdFilmHome: [],
     listaIdSerieHome: [],
-    listaIdFilm: [],
-    listaIdSerie: [],
+
+    listaFilmHomeSlider: [],
+    listaSerieHomeSlider: [],
+    sliderFilmIDXmin: 0,
+    sliderFilmIDXmax: 3,
+
+    sliderSerieIDXmin: 0,
+    sliderSerieIDXmax: 2,
+
     scelte: ['Home', 'Film', 'Serie TV'],
     scelteIDX: 0,
     maxVote: 5,
@@ -44,12 +55,13 @@ new Vue({
     .then((xhr) => {
       this.dataListaFilmHome = xhr.data;
       this.listaIdFilmHome = [];
+      this.listaFilmHomeSlider = [];
       this.listaFilmHome = this.dataListaFilmHome.results;
       this.voteFive(this.listaFilmHome);
       this.IdElemFunction(this.listaFilmHome, this.listaIdFilmHome);
       this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilmHome);
       this.actorCallsFilmHome();
-      this.displayDelay();
+      this.filterSlider(this.listaFilmHome, this.listaFilmHomeSlider, this.sliderFilmIDXmin, this.sliderFilmIDXmax);
     })
 
     axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${this.apiKey}`)
@@ -61,7 +73,6 @@ new Vue({
       this.IdElemFunction(this.listaSerieHome, this.listaIdSerieHome);
       this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaSerieHome);
       this.actorCallsSerieHome();
-      this.displayDelay();
     })
   },
 
@@ -225,12 +236,20 @@ new Vue({
       });//end listaIdFilmHome.ForEach
     },
 
+    //filtra in un array gli elementi da scorrere nello slider in base all'indice
+    filterSlider: function(arrayDaFiltrare, arrayFiltrato, min, max) {
+      arrayDaFiltrare.forEach((element, index) =>  {
+        if (index >= min && index <= max) {
+          arrayFiltrato.push(element);
+        }
+      })
+    },
+
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar
     utilizzate per il render delle stelline*/
     voteFive: function(lista) {
       let round;
-      let whiteStar;
-      let number_ws;
+      let whiteStars;
       lista.forEach((element) => {
         const {vote_average} = element;
         round = Math.round(element.vote_average / 2);
@@ -241,7 +260,7 @@ new Vue({
     },
 
     randomNumber: function (min, max) {
-      var result = Math.floor(Math.random() * (max + 1 - min) + min);
+      let result = Math.floor(Math.random() * (max + 1 - min) + min);
       return result;
     },
 
@@ -310,13 +329,12 @@ new Vue({
     },
 
     //restituisce il percorso file dell'immagine di copertina
-    imagePoster: function(index, lista, dimensioni) {
-      const poster = lista[index].backdrop_path;
+    imagePoster: function(percorsoImg, dimensioni) {
       let imageRender;
-      if(poster == null) {
+      if(percorsoImg == null) {
         imageRender = 'image/image-na.png';
       } else {
-        imageRender = `https://image.tmdb.org/t/p/${dimensioni}${poster}`;
+        imageRender = `https://image.tmdb.org/t/p/${dimensioni}${percorsoImg}`;
       }
       return imageRender;
     },
