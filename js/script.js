@@ -25,11 +25,9 @@ new Vue({
 
     listaFilmHomeSlider: [],
     listaSerieHomeSlider: [],
-    sliderFilmIDXmin: 0,
-    sliderFilmIDXmax: 2,
+    sliderIDXmin: 0,
+    sliderIDXmax: 2,
 
-    sliderSerieIDXmin: 0,
-    sliderSerieIDXmax: 2,
 
     scelte: ['Home', 'Film', 'Serie TV'],
     scelteIDX: 0,
@@ -61,7 +59,7 @@ new Vue({
       this.IdElemFunction(this.listaFilmHome, this.listaIdFilmHome);
       this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilmHome);
       this.actorCallsFilmHome();
-      this.filterSlider(this.listaFilmHome, this.listaFilmHomeSlider, this.sliderFilmIDXmin, this.sliderFilmIDXmax);
+      this.prev(this.listaFilmHome, this.listaFilmHomeSlider);
     })
 
     axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${this.apiKey}`)
@@ -73,6 +71,7 @@ new Vue({
       this.IdElemFunction(this.listaSerieHome, this.listaIdSerieHome);
       this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaSerieHome);
       this.actorCallsSerieHome();
+      this.next(this.listaSerieHome, this.listaSerieHomeSlider);
     })
   },
 
@@ -82,9 +81,6 @@ new Vue({
       this.searchMovie();
       this.searchSeries();
       this.searchEmpty();
-      setTimeout(() => {
-        this.query = "";
-      }, 5000)
     },
 
     searchMovie: function() {
@@ -236,13 +232,38 @@ new Vue({
       });//end listaIdFilmHome.ForEach
     },
 
-    //filtra in un array gli elementi da scorrere nello slider in base all'indice
-    filterSlider: function(arrayDaFiltrare, arrayFiltrato, min, max) {
+    next: function(arrayDaFiltrare, arrayFiltrato) {
+      arrayFiltrato.length = 0;
+      this.sliderIDXmin += 3;
+      this.sliderIDXmax += 3;
+      if(this.sliderIDXmax >= arrayDaFiltrare.length) {
+        this.sliderIDXmin = 0;
+        this.sliderIDXmax = 2;
+      }
+    
       arrayDaFiltrare.forEach((element, index) =>  {
-        if (index >= min && index <= max) {
+        if (index >= this.sliderIDXmin && index <= this.sliderIDXmax) {
           arrayFiltrato.push(element);
         }
       })
+      return arrayFiltrato;
+    },
+
+    prev: function(arrayDaFiltrare, arrayFiltrato) {
+      arrayFiltrato.length = 0;
+      this.sliderIDXmin -= 3;
+      this.sliderIDXmax -= 3;
+      if(this.sliderIDXmin < 0) {
+        this.sliderIDXmax = arrayDaFiltrare.length - 1;
+        this.sliderIDXmin = arrayDaFiltrare.length - 3;
+      }
+
+      arrayDaFiltrare.forEach((element, index) =>  {
+        if (index >= this.sliderIDXmin && index <= this.sliderIDXmax) {
+          arrayFiltrato.push(element);
+        }
+      })
+      return arrayFiltrato;
     },
 
     /*restituisce nella struttura dell'oggetto le proprietà whiteStar e yellowStar

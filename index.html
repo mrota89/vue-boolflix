@@ -22,14 +22,14 @@
             </div>
           </div>
           <div class="search">
-            <input @keyup.enter="searchAll" type="text" placeholder="cerca qualcosa..." v-model="query">
+            <input @keyup.enter="searchAll" type="text" placeholder="cerca film/serie tv per titolo" v-model="query">
             <div class="btn-search" @click="searchAll">
               Cerca <i class="fas fa-angle-right"></i>
             </div>
           </div>
           <div class="box-query-empty">
             <div v-if="queryEmpty()">
-              <strong>Scrivere una parola chiave per iniziare la ricerca</strong>
+              <strong>Qui appariranno i risultati della ricerca</strong>
             </div>
             <div v-if="!queryEmpty() && scelteIDX > 0" class="alert-risultati">
               {{resultFor}}
@@ -46,7 +46,9 @@
         </div>
 
         <!-- container homepage -->
+
         <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
+          <!-- /jumbotron -->
           <div class="immagine-suggerita">
             <img :src="imagePoster(listaTrend[index].backdrop_path, 'w1280')" alt="">
           </div>
@@ -90,13 +92,14 @@
           <div class="consiglio">
             <em>Tra i più visti di questa settimana</em>
           </div>
+          <!-- /jumbotron -->
 
-          <title class="flex justify-left">Film in primo piano</title>
+          <title class="title-section flex justify-center">Film in primo piano</title>
 
           <!-- sezione slider homepage film -->
           <div class="slider-container">
 
-            <div class="prev">
+            <div class="prev" @click="prev(listaFilmHome, listaFilmHomeSlider)">
               <i class="fas fa-angle-left" ></i>
             </div>
             
@@ -160,11 +163,86 @@
                 </div>
               </div>
             </div>
-            <div class="next">
+            <div class="next" @click="next(listaFilmHome, listaFilmHomeSlider)">
               <i class="fas fa-angle-right"></i>
             </div>
           </div>
           <!-- /sezione slider homepage film -->
+
+          <title class="title-section flex justify-center">Serie TV in primo piano</title>
+
+          <!-- sezione slider homepage serie tv -->
+          <div class="slider-container">
+
+            <div class="prev" @click="prev(listaSerieHome, listaSerieHomeSlider)">
+              <i class="fas fa-angle-left" ></i>
+            </div>
+            
+            <div v-for="(element, index) in listaSerieHomeSlider" class="card">
+              <div class="poster-slider">
+                <img :src="imagePoster(listaSerieHomeSlider[index].poster_path, 'w342')" alt="">
+              </div>
+  
+              <div class="info-slider">
+                <div class="title mrg-top">
+                  <strong>Titolo:</strong><br>{{element.title}}
+                </div>
+  
+                <div class="original-title mrg-top">
+                  <strong>Titolo originale:</strong><br>{{element.original_title}}
+                </div>
+  
+                <!--* queste sezioni vengono mostrate successivamente, in modo da
+                  concludere le chiamate ajax per ottenere i dati su cast e generi,
+                  evitando di rallentare il caricamento delle singole cards film /serie *-->
+                <div v-if="flagDisplaySection" class="cast mrg-top">
+                  <strong>Cast:</strong><br>
+                  <div v-if="element.actors.length > 0" v-for="attore in element.actors">
+                    <span>{{attore}}</span>
+                  </div>
+                  <span v-if="element.actors.length === 0">Non disponibile</span>
+                </div>
+  
+                <div v-if="flagDisplaySection && element.generi.length > 0" class="genre mrg-top">
+                  <strong>Generi:</strong><br>
+                  <div v-for="genere in element.generi">{{genere}}</div>
+                </div>
+                <!-- ***********************************************************-->
+  
+                <div class="language mrg-top">
+                  <strong>Lingua originale:</strong>
+                  <div class="string-box" v-if="!flagVisibility(index, listaSerieHomeSlider)">
+                    {{element.original_language}}
+                  </div>
+                  <div class="box-image" v-if="flagVisibility(index, listaSerieHomeSlider)">
+                    <img :src="flagLang(index, listaSerieHomeSlider)" alt="">
+                  </div>
+                </div>
+  
+                <div class="vote mrg-top">
+                  <strong>Voto:</strong><br>
+                  <div class="star-vote">
+                    <i class="fas fa-star yellow-star" v-for="yellowStar in element.yellowStar"></i>
+                    <i class="far fa-star" v-for="whiteStar in element.whiteStar"></i>
+                  </div>
+                </div>
+  
+                <div class="overview mrg-top">
+                  <strong>Overview</strong><br>
+                  <div v-if="!overview(index, listaSerieHomeSlider)" class="not-available-overview">
+                    Non disponibile
+                  </div>
+                  <div v-if="overview(index, listaSerieHomeSlider)" class="available-overview">
+                    {{element.overview}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="next" @click="next(listaSerieHome, listaSerieHomeSlider)">
+              <i class="fas fa-angle-right"></i>
+            </div>
+          </div>
+          <!-- /sezione slider homepage serie tv -->
         </div>
         <!-- /container homepage -->
 
