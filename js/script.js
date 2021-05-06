@@ -26,7 +26,7 @@ new Vue({
     listaFilmHomeSlider: [],
     listaSerieHomeSlider: [],
     sliderFilmIDXmin: 0,
-    sliderFilmIDXmax: 3,
+    sliderFilmIDXmax: 2,
 
     sliderSerieIDXmin: 0,
     sliderSerieIDXmax: 2,

@@ -39,10 +39,12 @@
       </header>
 
       <main>
+        <!-- messaggio di errore -->
         <div v-if="dataListaTrend.length == 0" class="pagina-errore">
           Ops! Qualcosa è andato storto.
           Riprova a caricare la pagina oppure torna più tardi.
         </div>
+
         <!-- container homepage -->
         <div v-if="flagDisplayHome === true" v-for="(element, index) in listaTrend" class="home-page">
           <div class="immagine-suggerita">
@@ -89,6 +91,8 @@
             <em>Tra i più visti di questa settimana</em>
           </div>
 
+          <title class="flex justify-left">Film in primo piano</title>
+
           <!-- sezione slider homepage film -->
           <div class="slider-container">
 
@@ -107,7 +111,7 @@
                 </div>
   
                 <div class="original-title mrg-top">
-                  <strong>Titolo originale</strong><br>{{element.original_title}}
+                  <strong>Titolo originale:</strong><br>{{element.original_title}}
                 </div>
   
                 <!--* queste sezioni vengono mostrate successivamente, in modo da
