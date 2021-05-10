@@ -49,6 +49,7 @@ new Vue({
       }, 10000);
     })
 
+    //chiamate axios per popolare gli slider in homepage
     axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${this.apiKey}`)
     .then((xhr) => {
       this.dataListaFilmHome = xhr.data;
@@ -58,7 +59,8 @@ new Vue({
       this.voteFive(this.listaFilmHome);
       this.IdElemFunction(this.listaFilmHome, this.listaIdFilmHome);
       this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilmHome);
-      this.actorCallsFilmHome();
+      this.actorCalls(`https://api.themoviedb.org/3/movie`, this.listaIdFilmHome, this.listaFilmHome);
+      this.displayDelay();
       this.prev(this.listaFilmHome, this.listaFilmHomeSlider);
     })
 
@@ -69,11 +71,12 @@ new Vue({
       this.listaSerieHome = this.dataListaSerieHome.results;
       this.voteFive(this.listaSerieHome);
       this.IdElemFunction(this.listaSerieHome, this.listaIdSerieHome);
-      this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaSerieHome);
-      this.actorCallsSerieHome();
+      this.genreCall('https://api.themoviedb.org/3/genre/tv/list', this.listaSerieHome);
+      this.actorCalls(`https://api.themoviedb.org/3/tv`, this.listaIdSerieHome, this.listaSerieHome);
+      this.displayDelay();
       this.next(this.listaSerieHome, this.listaSerieHomeSlider);
     })
-  },
+   },
 
   methods: {
     searchAll: function() {
@@ -94,7 +97,7 @@ new Vue({
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaFilm, this.listaIdFilm);
         this.genreCall('https://api.themoviedb.org/3/genre/movie/list', this.listaFilm);
-        this.actorCallsFilm();
+        this.actorCalls('https://api.themoviedb.org/3/movie', this.listaIdFilm, this.listaFilm);
         this.displayDelay();
         this.queryResult();
       });
@@ -111,13 +114,13 @@ new Vue({
         this.changeTab(this.scelteIDX);
         this.IdElemFunction(this.listaSerie, this.listaIdSerie);
         this.genreCall('https://api.themoviedb.org/3/genre/tv/list', this.listaSerie);
-        this.actorCallsSerie();
+        this.actorCalls('https://api.themoviedb.org/3/tv', this.listaIdSerie, this.listaSerie);
         this.displayDelay();
         this.queryResult();
       });
     },
 
-    // restituisce l'esecuzione della chiamata axios
+    // restituisce l'esecuzione della chiamata axios per la query di ricerca
     ajaxCall: function(URL) {
       return axios.get(URL, {
         params: {
@@ -172,66 +175,25 @@ new Vue({
       });
     },
 
-    /*per ogni id di film/serie tv (presente in listaId), esegue una chiamata ajax
+     /*per ogni id di film/serie tv (presente in listaId), esegue una chiamata ajax
     e successivamente la funzione thenCallsActors*/
-    actorCallsFilm: function() {
+    actorCalls: function(URL, listaId, listaSerieOrFilm ) {
       /*per ogni Id eseguo una chiamata ajax per ottenere i credits
       del film corrispondente*/
-      this.listaIdFilm.forEach((element, index) => {
-        axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
+      listaId.forEach((element, index) => {
+        axios.get(URL + `/${element}/credits`, {
           params: {
             api_key: this.apiKey,
             language: 'en-US',
           },
         }).then((xhr) => {
           let dataObject = xhr.data.cast;
-          this.thenCallsActors(this.listaFilm, dataObject, index)
+          this.thenCallsActors(listaSerieOrFilm, dataObject, index)
         })
-      });//end listaIdFilm.ForEach
+      });//end listaId.ForEach
     },
 
-    actorCallsFilmHome: function() {
-      this.listaIdFilmHome.forEach((element, index) => {
-        axios.get(`https://api.themoviedb.org/3/movie/${element}/credits`, {
-          params: {
-            api_key: this.apiKey,
-            language: 'en-US',
-          },
-        }).then((xhr) => {
-          let dataObject = xhr.data.cast;
-          this.thenCallsActors(this.listaFilmHome, dataObject, index)
-        })
-      });//end listaIdFilmHome.ForEach
-    },
-
-    actorCallsSerie: function() {
-      this.listaIdSerie.forEach((element, index) => {
-        axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
-          params: {
-            api_key: this.apiKey,
-            language: 'en-US',
-          },
-        }).then((xhr) => {
-          let dataObject = xhr.data.cast;
-          this.thenCallsActors(this.listaSerie, dataObject, index)
-        });
-      });//end listaIdSerie.ForEach
-    },
-
-    actorCallsSerieHome: function() {
-      this.listaIdSerieHome.forEach((element, index) => {
-        axios.get(`https://api.themoviedb.org/3/tv/${element}/credits`, {
-          params: {
-            api_key: this.apiKey,
-            language: 'en-US',
-          },
-        }).then((xhr) => {
-          let dataObject = xhr.data.cast;
-          this.thenCallsActors(this.listaSerieHome, dataObject, index)
-        })
-      });//end listaIdFilmHome.ForEach
-    },
-
+    //scorrono array per array in homepage
     next: function(arrayDaFiltrare, arrayFiltrato) {
       arrayFiltrato.length = 0;
       this.sliderIDXmin += 3;

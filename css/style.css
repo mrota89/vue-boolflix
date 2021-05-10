@@ -20,7 +20,6 @@ img {
 
 .flex {
   display: flex;
-  align-items: flex-start;
 }
 
 .justify-center {
@@ -44,7 +43,6 @@ header {
 }
 
 header .inner-header {
-  display: flex;
   width: 100%;
   justify-content: space-around;
   align-items: center;
@@ -58,7 +56,6 @@ header .logo-bool {
 }
 
 header .menu-scelta {
-  display: flex;
   justify-content: space-around;
   align-items: center;
   width: 20%;
@@ -72,7 +69,6 @@ header .menu-scelta .btn-menu-active {
 
 header .search {
   width: 50%;
-  display: flex;
   justify-content: flex-end;
   align-items: center;
 }
@@ -92,7 +88,6 @@ header input {
 
 header .btn-search {
   height: 55px;
-  display: flex;
   align-items: center;
   justify-content: space-evenly;
   width: 100px;
@@ -140,7 +135,7 @@ main .home-page .immagine-suggerita {
 }
 
 main .home-page .immagine-suggerita img {
-  height: 70vh;
+  height: 100vh;
   filter:brightness(50%);
 }
 
@@ -167,7 +162,6 @@ main .info-homepage .lingua-home .box-image-home {
 }
 
 main .info-homepage .valutazione-home, .lingua-home {
-  display: flex;
   justify-content: space-between;
   width: 50%;
 }
@@ -178,13 +172,13 @@ main .info-homepage .overview-home  div {
 
 main .home-page .title-section {
   margin-top: 30px;
+  align-items: flex-start;
 }
 
 main .home-page .slider-container {
   padding: 30px 10px;
   width: 100vw;
   max-width: 100%;
-  display: flex;
   justify-content: space-between;
   align-items: center;
 }
@@ -235,6 +229,9 @@ main .info {
 
 main .slider-container .card:hover .info-slider {
   display: block;
+}
+main .slider-container .card {
+  box-shadow: 1px 1px 15px #ff0000;
 }
 
 main .card:hover .info {
