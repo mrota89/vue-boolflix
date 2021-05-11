@@ -130,7 +130,7 @@ main .home-page {
 }
 
 main .home-page .immagine-suggerita {
-  height: 70vh;
+  height: 80vh;
   overflow: hidden;
 }
 
@@ -194,7 +194,6 @@ main .card-container {
   flex-wrap: wrap;
   justify-content: left;
   align-items: center;
-  padding: 10px;
 }
 
 main .card {
@@ -205,6 +204,7 @@ main .copertina {
   width: 185px;
   height: 300px;
   display: flex;
+  margin: 10px;
 }
 
 main .info-slider, .info {
